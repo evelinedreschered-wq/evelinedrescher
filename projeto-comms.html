@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicativo para Solicitações de Demanda | Eveline Drescher</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --azul-escuro: #123b63;
+            --azul: #1d5d91;
+            --azul-claro: #eaf4fb;
+            --azul-medio: #3b82b5;
+            --branco: #ffffff;
+            --cinza: #f5f7fa;
+            --cinza-texto: #5f6b76;
+            --texto: #243746;
+            --borda: #dce6ee;
+            --sombra: 0 10px 30px rgba(18, 59, 99, 0.10);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--texto);
+            background: #ffffff;
+            line-height: 1.8;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #123b63 0%, #1d5d91 55%, #3b82b5 100%);
+            color: white;
+            padding: 70px 20px 85px;
+        }
+
+        .header-container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            font-size: 0.95rem;
+            margin-bottom: 45px;
+            opacity: 0.9;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+            transform: translateX(-4px);
+        }
+
+        .header-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 7px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 2.7rem;
+            line-height: 1.25;
+            max-width: 850px;
+            margin-bottom: 20px;
+        }
+
+        header p {
+            max-width: 800px;
+            font-size: 1.05rem;
+            opacity: 0.92;
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        /* SECTIONS */
+        section {
+            padding: 70px 0;
+        }
+
+        section:nth-child(even) {
+            background: var(--cinza);
+        }
+
+        .section-title {
+            color: var(--azul-escuro);
+            font-size: 2rem;
+            margin-bottom: 30px;
+            line-height: 1.3;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 55px;
+            height: 4px;
+            background: var(--azul-medio);
+            border-radius: 5px;
+            margin-top: 12px;
+        }
+
+        .section-subtitle {
+            color: var(--cinza-texto);
+            margin-bottom: 30px;
+        }
+
+        /* INTRO */
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .info-card {
+            background: white;
+            border: 1px solid var(--borda);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+        }
+
+        .info-card h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 12px;
+            font-size: 1.15rem;
+        }
+
+        .info-card p {
+            color: var(--cinza-texto);
+        }
+
+        /* TEXT */
+        .content-text {
+            max-width: 950px;
+        }
+
+        .content-text p {
+            margin-bottom: 20px;
+        }
+
+        .content-text strong {
+            color: var(--azul-escuro);
+        }
+
+        /* IMAGE */
+        .image-block {
+            margin: 35px 0 15px;
+            text-align: center;
+        }
+
+        .image-block img {
+            max-width: 100%;
+            width: auto;
+            max-height: 720px;
+            object-fit: contain;
+            border-radius: 14px;
+            border: 1px solid var(--borda);
+            box-shadow: var(--sombra);
+            background: white;
+        }
+
+        .image-caption {
+            margin-top: 12px;
+            color: #71808d;
+            font-size: 0.88rem;
+            font-style: italic;
+        }
+
+        /* TWO IMAGES */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .image-grid .image-block {
+            margin: 0;
+        }
+
+        /* LIST */
+        .custom-list {
+            margin: 20px 0 25px 20px;
+        }
+
+        .custom-list li {
+            margin-bottom: 8px;
+        }
+
+        /* CODE */
+        .code-title {
+            color: var(--azul-escuro);
+            margin: 30px 0 12px;
+            font-size: 1rem;
+        }
+
+        .code-block {
+            background: #17212b;
+            color: #e9f1f7;
+            padding: 25px;
+            border-radius: 12px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.9rem;
+            line-height: 1.65;
+            margin: 20px 0 30px;
+            box-shadow: var(--sombra);
+        }
+
+        /* TAGS */
+        .technology-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 7px 15px;
+            background: var(--azul-claro);
+            color: var(--azul-escuro);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* HIGHLIGHT */
+        .highlight {
+            background: var(--azul-claro);
+            border-left: 5px solid var(--azul-medio);
+            padding: 22px 25px;
+            border-radius: 0 12px 12px 0;
+            margin: 25px 0;
+        }
+
+        .highlight strong {
+            color: var(--azul-escuro);
+        }
+
+        /* STEP */
+        .step {
+            background: white;
+            border: 1px solid var(--borda);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 5px 20px rgba(18, 59, 99, 0.06);
+        }
+
+        .step h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 12px;
+        }
+
+        /* RESULTADOS */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .result-card {
+            background: white;
+            border: 1px solid var(--borda);
+            border-radius: 15px;
+            padding: 25px;
+        }
+
+        .result-card h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 8px;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--azul-escuro);
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        footer p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            header {
+                padding: 50px 20px 60px;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            section {
+                padding: 50px 0;
+            }
+
+            .intro-grid,
+            .image-grid,
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.65rem;
+            }
+
+            .code-block {
+                font-size: 0.78rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-container">
+
+            <a href="power-apps.html" class="back-link">
+                ← Voltar para Power Apps
+            </a>
+
+            <span class="header-tag">Power Apps · SharePoint · Power Automate</span>
+
+            <h1>
+                Aplicativo para solicitações de demanda
+            </h1>
+
+            <p>
+                Desenvolvimento de uma aplicação corporativa para centralização,
+                gerenciamento e acompanhamento de solicitações de demandas
+                destinadas ao time de Comunicação Interna.
+            </p>
+
+        </div>
+    </header>
+
+
+    <!-- PROBLEMA E OBJETIVO -->
+    <section>
+        <div class="container">
+
+            <div class="intro-grid">
+
+                <div class="info-card">
+                    <h3>Problema</h3>
+
+                    <p>
+                        O processo de solicitação de demandas era desorganizado
+                        e não centralizado, aumentando o tempo gasto pelo time
+                        na produção e gerando perdas no histórico do processo.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <h3>Objetivo</h3>
+
+                    <p>
+                        Criar um aplicativo que gerencie o processo de solicitações
+                        de demandas feitas por toda a empresa para seu time de
+                        Comunicação Interna. O aplicativo permite o cadastro da
+                        solicitação pelo cliente, o acompanhamento das demandas
+                        e o gerenciamento completo das solicitações pelo time,
+                        inclusive garantindo o envio de emails sobre o processo
+                        quando cada etapa é realizada a fim de sempre manter
+                        todos atualizados sobre o andamento da solicitação.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="technology-box">
+                <span class="tag">Power Apps</span>
+                <span class="tag">Power Fx</span>
+                <span class="tag">SharePoint</span>
+                <span class="tag">Power Automate</span>
+                <span class="tag">Microsoft 365</span>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- FLUXOGRAMA -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Fluxo do aplicativo
+            </h2>
+
+            <div class="content-text">
+                <p>
+                    Esse é um fluxograma explicativo do processo dentro do aplicativo,
+                    apresentando de forma visual as principais etapas percorridas
+                    pelo usuário e pelo time de Comunicação Interna.
+                </p>
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/diagrama_app.png"
+                    alt="Fluxograma do processo dentro do aplicativo"
+                >
+                <div class="image-caption">
+                    Fluxograma explicativo do processo dentro do aplicativo.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- DESENVOLVIMENTO -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Desenvolvimento
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    O primeiro passo do processo foi montar as listas ligadas ao
+                    app dentro do SharePoint: gerenciamento do cadastro das
+                    informações (<strong>Comms_team_list</strong>), lista dos
+                    perfis de usuário do time (<strong>Comms_team</strong>) e
+                    a lista com usuário e senha para o acesso da área do time
+                    (<strong>Credencial_comms</strong>).
+                </p>
+
+                <p>
+                    Após, elas foram conectadas ao aplicativo e são mencionadas
+                    quando necessário dentro dos códigos.
+                </p>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- TELA INICIAL -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Página inicial do aplicativo
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Essa é a página inicial do aplicativo:
+                </p>
+
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/tela_inicial.png"
+                    alt="Página inicial do aplicativo"
+                >
+                <div class="image-caption">
+                    Página inicial do aplicativo.
+                </div>
+            </div>
+
+            <div class="content-text">
+
+                <p>
+                    Nela, temos o botão de <strong>Need Help</strong>, onde
+                    quando o usuário clica, ele é levado automaticamente para
+                    seu <strong>email</strong>, já com o endereço correto para
+                    o qual ele deve enviar suas dúvidas e um título padrão.
+                </p>
+
+            </div>
+
+            <div class="image-grid">
+
+                <div class="image-block">
+                    <img
+                        src="imagens/codigo_email_app.png"
+                        alt="Código utilizado para o botão Need Help"
+                    >
+                    <div class="image-caption">
+                        Código utilizado no botão Need Help.
+                    </div>
+                </div>
+
+                <div class="image-block">
+                    <img
+                        src="imagens/email_app.png"
+                        alt="Email aberto pelo aplicativo"
+                    >
+                    <div class="image-caption">
+                        Email aberto automaticamente pelo aplicativo.
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ACCESS -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Access e página secundária
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Já quando o usuário utiliza o <strong>botão Access</strong>,
+                    é usado o código <strong>Navigate(tela_inicial)</strong>
+                    para levar para a página secundária abaixo, onde podemos
+                    ver na parte direita o cronograma explicativo do fluxo de
+                    uso e na parte esquerda, vários botões que levam para
+                    páginas subsequentes.
+                </p>
+
+                <p>
+                    Também podemos observar na imagem que o aplicativo
+                    <strong>exibe a foto de perfil e nome do usuário</strong>.
+                    Isso acontece porque conectei os grupos do Office ao
+                    aplicativo e utilizei um código para captar
+                    <strong>user.photo</strong> e <strong>name</strong> de
+                    quem está cadastrado dentro da Microsoft da empresa e
+                    está acessando o meu aplicativo.
+                </p>
+
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/pagina_secundaria_app.png"
+                    alt="Página secundária do aplicativo"
+                >
+                <div class="image-caption">
+                    Página secundária com cronograma, navegação e identificação do usuário.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- CREATE REQUEST -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Create Request
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Quando queremos abrir uma nova solicitação, usamos o primeiro
+                    botão <strong>Create Request</strong>, onde incluí a criação
+                    de uma coleção para melhorar o desempenho do aplicativo,
+                    ajudando a:
+                </p>
+
+                <ul class="custom-list">
+                    <li>
+                        Ordenar a lista pelo campo <strong>Criado</strong>
+                        (mais recente primeiro).
+                    </li>
+
+                    <li>
+                        Aumentar de <strong>500 para 200 mil registros</strong>
+                        a quantidade de armazenamento de registros.
+                    </li>
+
+                    <li>
+                        Armazenar tudo na coleção <strong>colComms</strong>.
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/navigate_create_request.png"
+                    alt="Navegação para criação de nova solicitação"
+                >
+                <div class="image-caption">
+                    Navegação para a página de criação de uma nova solicitação.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- CADASTRO -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Cadastro da solicitação
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Já dentro da página de cadastro, utilizei um form para
+                    trazer os campos necessários da <strong>Comms_team_list</strong>
+                    a serem preenchidos pelos usuários.
+                </p>
+
+                <p>
+                    Inclusive utilizando o <strong>asterisco</strong> para indicar
+                    que o campo é do tipo <strong>required</strong>. Se o usuário
+                    tentar salvar sem preencher algum deles, o processo será
+                    travado e na página vai aparecer uma notification informando
+                    que falta preencher algum campo obrigatório para salvar o
+                    formulário.
+                </p>
+
+                <p>
+                    Na página também podemos observar que automaticamente temos
+                    o <strong>código da solicitação</strong> criado no Your Code,
+                    bem como a <strong>data de registro</strong>.
+                </p>
+
+                <p>
+                    No caso da Registration Date, utilizo o código
+                    <strong>Today()</strong> para sempre gravar a data do dia
+                    automaticamente.
+                </p>
+
+            </div>
+
+            <h3 class="code-title">
+                Código utilizado para criação automática do código da solicitação
+            </h3>
+
+            <div class="code-block"><pre>Set(
+    varCodigo;
+    "COMMS-" &
+    Year(Today()) &
+    "-" &
+    Text(
+        CountRows('Comms team list') + 1;
+        "000"
+    )
+)</pre></div>
+
+            <div class="content-text">
+
+                <p>
+                    Assim é contabilizado sempre um número a mais no registro
+                    também de forma automática.
+                </p>
+
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/cadastro_app.png"
+                    alt="Tela de cadastro da solicitação"
+                >
+                <div class="image-caption">
+                    Formulário de cadastro da solicitação.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- CAMPOS AUTOMÁTICOS -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Campos calculados automaticamente
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Nesse formulário, os <strong>campos de prazo, prioridade
+                    e tempo de dedicação planejado</strong> são calculados
+                    automaticamente de acordo com o tipo de solicitação
+                    selecionada pelo usuário.
+                </p>
+
+                <p>
+                    Por exemplo, no caso da produção de vídeo, o planejado é
+                    que essa solicitação seja concluída em <strong>48h</strong>
+                    pelo time responsável.
+                </p>
+
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/campos_automaticos_app.png"
+                    alt="Campos automáticos do formulário"
+                >
+                <div class="image-caption">
+                    Campos de prazo, prioridade e tempo de dedicação calculados automaticamente.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- URGÊNCIA -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Urgência e prioridade
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Além disso, o usuário pode definir se precisa que sua
+                    solicitação seja atendida com <strong>urgência</strong>
+                    e a justificativa para isso.
+                </p>
+
+                <p>
+                    Caso ele opte por isso, o tempo automático de cálculo de
+                    prazo é cortado pela metade. No caso do exemplo, passaria
+                    de <strong>48h para 24h</strong>.
+                </p>
+
+                <p>
+                    A prioridade também passaria a constar como
+                    <strong>Urgent</strong> e não mais de acordo com os dias
+                    definidos:
+                </p>
+
+                <ul class="custom-list">
+                    <li><strong>15 dias:</strong> Low</li>
+                    <li><strong>3 dias:</strong> High</li>
+                    <li><strong>10 dias:</strong> Medium</li>
+                </ul>
+
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/codigo_campos_automaticos_app.png"
+                    alt="Código dos campos automáticos e prioridade"
+                >
+                <div class="image-caption">
+                    Código responsável pelos cálculos automáticos e tratamento de urgência.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- SALVAMENTO -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Salvamento e notificações
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Por fim, quando o usuário realiza o processo de salvamento
+                    dos dados, os <strong>campos obrigatórios são verificados</strong>,
+                    algumas informações são guardadas em <strong>variáveis</strong>
+                    para melhora do desempenho e os <strong>emails informativos
+                    são enviados</strong>.
+                </p>
+
+                <p>
+                    Um email é enviado para o time de comunicação para avisar
+                    sobre a nova solicitação e outro para o usuário informando
+                    que seu pedido foi criado.
+                </p>
+
+                <p>
+                    Após isso, é realizado o <strong>refresh na coleção</strong>
+                    e ocorre a <strong>mudança no status para Created</strong>.
+                </p>
+
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/codigo_salvar_solicitação.png"
+                    alt="Código de salvamento da solicitação"
+                >
+                <div class="image-caption">
+                    Código utilizado no salvamento, atualização da coleção e envio das notificações.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- TRACK REQUEST -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Track Request
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Após todo esse processo, o usuário é
+                    <strong>direcionado automaticamente para a página
+                    Track Request</strong>, onde já aparece a solicitação
+                    dele registrada.
+                </p>
+
+                <p>
+                    Nessa página, incluí dentro da galeria um
+                    <strong>código para que sejam exibidas somente as
+                    solicitações do usuário conectado ao app</strong>,
+                    novamente usando o <strong>user.name</strong> vinculado
+                    ao grupo da Microsoft.
+                </p>
+
+                <p>
+                    Além disso, na galeria aparece nesse processo primário
+                    o responsável não definido, porque ainda não existe um
+                    responsável de comunicação atribuído a esse pedido.
+                </p>
+
+                <p>
+                    Ele aparece na galeria mais adiante, quando alguém do
+                    time de comunicação inclui seu nome na respectiva
+                    solicitação, com posterior aviso por email para o
+                    solicitante e mudança na galeria para o nome da pessoa
+                    que aceitou a demanda.
+                </p>
+
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/galeria_usuário.png"
+                    alt="Galeria de solicitações do usuário"
+                >
+                <div class="image-caption">
+                    Galeria com as solicitações relacionadas ao usuário conectado.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- COMMS AREA -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Área do time de Comunicação
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Agora que conhecemos as páginas que são acessadas pelos
+                    usuários, passamos para a área definida pelo time de
+                    comunicação que atende as demandas.
+                </p>
+
+                <p>
+                    Para navegar é preciso acessar o
+                    <strong>botão Comms Área</strong> da página secundária
+                    do app.
+                </p>
+
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/Comms_app_area.png"
+                    alt="Botão Comms Área"
+                >
+                <div class="image-caption">
+                    Acesso à área de gerenciamento do time de Comunicação.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- CREDENCIAIS -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Controle de acesso
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Ali o usuário é direcionado para a página de
+                    <strong>inserção das credenciais</strong>, ligada
+                    diretamente à lista <strong>Credencial_comms</strong>.
+                </p>
+
+                <p>
+                    Só vai acessar a área do time quem sabe o nome registrado
+                    para usuário e senha dentro dessa lista.
+                </p>
+
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/credenciais_app.png"
+                    alt="Tela de inserção das credenciais"
+                >
+                <div class="image-caption">
+                    Tela de autenticação para acesso à área do time.
+                </div>
+            </div>
+
+            <div class="highlight">
+
+                <strong>Fluxo de acesso:</strong>
+
+                <p>
+                    Quando a senha e usuário correto são registrados, o código
+                    utiliza <strong>Navigate(coms_area)</strong> para direcionar
+                    o usuário para a página principal de gerenciamento do time.
+                </p>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ÁREA COMMS -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Gerenciamento das solicitações
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Na página principal de gerenciamento do time são carregadas
+                    novas coleções, com destaque para as coleções
+                    <strong>Status, Área e Buttons</strong> e a lista de
+                    <strong>usuários do time representados pela lista
+                    Comms_team</strong>.
+                </p>
+
+                <p>
+                    Todos eles estão destacados na imagem abaixo.
+                </p>
+
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/galeria_comms.png"
+                    alt="Área de gerenciamento do time de Comunicação"
+                >
+                <div class="image-caption">
+                    Área de gerenciamento utilizada pelo time de Comunicação.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- STATUS -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Barra de status e indicadores
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    A <strong>coleção do Status</strong> é representada dentro
+                    da barra de progresso, que traz as solicitações de acordo
+                    com o <strong>status de andamento das solicitações</strong>,
+                    bem como nos botões, e apenas o que foi aberto no
+                    <strong>ano atual</strong>.
+                </p>
+
+                <p>
+                    Por isso fiz um trabalho dentro das propriedades de
+                    <strong>Color, Width e X</strong> também para garantir
+                    as cores corretas, o posicionamento e a estrutura da barra.
+                </p>
+
+                <p>
+                    Nessas partes, garanto o <strong>somatório das solicitações
+                    de acordo com o status atual</strong>.
+                </p>
+
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/galeria_status_app.png"
+                    alt="Barra de status do aplicativo"
+                >
+                <div class="image-caption">
+                    Barra de progresso e distribuição das solicitações por status.
+                </div>
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/code_propriedades_app.png"
+                    alt="Código das propriedades da barra de status"
+                >
+                <div class="image-caption">
+                    Código utilizado nas propriedades da barra de status.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- FILTROS E PROJETOS -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Filtros e gerenciamento de projetos
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Nessa página também incluí a <strong>filtragem das
+                    solicitações por responsável, por área e por status</strong>,
+                    tudo isso sendo considerado na galeria dessa área.
+                </p>
+
+                <p>
+                    Por fim, podemos observar que existem novas páginas
+                    disponíveis para o time de comunicação, como a de
+                    <strong>projetos</strong>, onde o time pode abrir uma
+                    solicitação sem tempo definido, de um trabalho que demanda
+                    mais etapas e tempo.
+                </p>
+
+                <p>
+                    Esse processo é acessado pelo botão
+                    <strong>Register Project</strong>.
+                </p>
+
+            </div>
+
+            <div class="image-block">
+                <img
+                    src="imagens/projetos_app.png"
+                    alt="Página de projetos do aplicativo"
+                >
+                <div class="image-caption">
+                    Página de projetos para demandas de maior complexidade e duração.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- FLUXO FINAL -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Andamento da solicitação
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Não vou detalhar todo o processo de andamento da solicitação
+                    por ser um fluxo extenso, mas basicamente o status vai
+                    mudando de acordo com o andamento do processo, como o
+                    <strong>aceite da solicitação</strong>, o envio para
+                    <strong>aprovação para o solicitante</strong> e assim
+                    por diante, até o chamado constar como
+                    <strong>Concluído</strong>.
+                </p>
+
+                <p>
+                    Nesse processo podem ser adicionados
+                    <strong>anexos de produção do chamado</strong>, e o botão
+                    <strong>Save</strong> vai ficando disponível apenas para
+                    o time de comunicação quando a ele for atribuído e ao
+                    usuário quando esse for o caso.
+                </p>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- RESULTADOS -->
+    <section>
+        <div class="container">
+
+            <h2 class="section-title">
+                Resultados
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    Por meio desse projeto garantimos a
+                    <strong>centralização das informações</strong>,
+                    a <strong>rastreabilidade do processo</strong>,
+                    a <strong>facilidade da comunicação</strong> e a
+                    <strong>economia de tempo</strong>, facilitando um fluxo
+                    tanto para o solicitante quanto para o time responsável.
+                </p>
+
+                <p>
+                    Além disso, os dados ficam disponíveis dentro da lista no
+                    <strong>SharePoint</strong>, podendo ser analisados em
+                    <strong>BI</strong> para visualizar insights valiosos
+                    para o negócio.
+                </p>
+
+            </div>
+
+            <div class="results-grid">
+
+                <div class="result-card">
+                    <h3>Centralização</h3>
+                    <p>
+                        Todas as solicitações passam a ser registradas e
+                        acompanhadas em um único ambiente.
+                    </p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Rastreabilidade</h3>
+                    <p>
+                        O histórico e o andamento das demandas ficam registrados
+                        ao longo do processo.
+                    </p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Comunicação</h3>
+                    <p>
+                        Notificações por email mantêm solicitantes e equipe
+                        atualizados sobre cada etapa.
+                    </p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Dados para BI</h3>
+                    <p>
+                        As informações estruturadas no SharePoint podem ser
+                        utilizadas para análises e geração de insights.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <p>
+            Projeto desenvolvido por Eveline Drescher
+        </p>
+    </footer>
+
+</body>
+</html>

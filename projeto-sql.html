@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL — Consolidação e análise de custos | Eveline Drescher</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--azul-escuro:#123b63;--azul:#1976d2;--azul-claro:#eaf4ff;--texto:#34495e;--branco:#fff;--cinza:#f5f8fb;--borda:#dfe8f0}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;color:var(--texto);background:var(--cinza);line-height:1.7}
+a{text-decoration:none;color:inherit}
+.hero{background:linear-gradient(135deg,#0f3557,#1976d2);color:white;padding:55px 20px}
+.hero-content,main{max-width:1100px;margin:auto}
+.back{display:inline-block;margin-bottom:28px;font-size:14px;color:#fff;opacity:.9}
+.project-icon{font-size:46px;margin-bottom:12px}
+.hero h1{font-size:38px;line-height:1.25;margin-bottom:14px}
+.hero p{max-width:850px;font-size:17px;opacity:.95}
+main{padding:45px 20px}
+section{background:var(--branco);border-radius:14px;padding:32px;margin-bottom:28px;box-shadow:0 5px 20px rgba(18,59,99,.07);border:1px solid var(--borda)}
+h2{color:var(--azul-escuro);font-size:25px;margin-bottom:16px}
+h3{color:var(--azul);font-size:19px;margin:28px 0 10px}
+p{margin-bottom:12px}
+ul{margin:10px 0 10px 22px}
+li{margin-bottom:8px}
+.highlight{background:var(--azul-claro);border-left:4px solid var(--azul);padding:18px 20px;border-radius:8px;margin-top:18px}
+.code-title{font-size:14px;font-weight:600;color:var(--azul-escuro);margin-top:18px;margin-bottom:8px}
+.sql-container{background:#101820;border-radius:10px;overflow-x:auto;padding:22px;margin-top:10px}
+pre{color:#e8edf2;font-family:Consolas,Monaco,monospace;font-size:13px;line-height:1.55;white-space:pre}
+.tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+.tag{background:var(--azul-claro);color:var(--azul-escuro);border-radius:20px;padding:6px 13px;font-size:13px;font-weight:500}
+footer{text-align:center;padding:30px 20px;color:#718096;font-size:13px}
+@media(max-width:700px){.hero h1{font-size:29px}section{padding:24px 20px}pre{font-size:11px}}
+</style>
+</head>
+<body>
+<header class="hero">
+<div class="hero-content">
+<a href="sql.html" class="back">← Voltar para SQL Analytics</a>
+<div class="project-icon">🗄️</div>
+<h1>SQL — Consolidação e análise de custos</h1>
+<p>Desenvolvimento de uma View em Oracle SQL para consolidar informações de projetos, solicitações, amostras, análises, planejamento e custos em uma estrutura única para análise e geração de informações.</p>
+</div>
+</header>
+
+<main>
+
+<section>
+<h2>Problema</h2>
+<p>As informações necessárias para análises de custos e planejamento estavam distribuídas em diferentes tabelas do banco de dados.</p>
+<p>Para obter uma visão consolidada, era necessário relacionar informações de projetos, solicitações, amostras, análises, códigos de custo e valores financeiros. Além disso, diferentes cenários de registros precisavam receber tratamentos específicos.</p>
+<div class="highlight">O desafio foi transformar informações distribuídas em uma estrutura única, organizada e reutilizável para análises.</div>
+</section>
+
+<section>
+<h2>Objetivo</h2>
+<p>Desenvolver uma View SQL capaz de consolidar informações provenientes de diferentes tabelas em uma única estrutura, permitindo análises de custos e planejamento de forma mais organizada.</p>
+<ul>
+<li>Relacionar informações de projetos e solicitações;</li>
+<li>Consolidar dados de amostras e análises;</li>
+<li>Relacionar informações de planejamento e custos;</li>
+<li>Tratar diferentes cenários de registros;</li>
+<li>Disponibilizar uma estrutura reutilizável para relatórios e análises.</li>
+</ul>
+</section>
+
+<section>
+<h2>Desenvolvimento</h2>
+<p>A solução utiliza recursos de <strong>Oracle SQL</strong> para construir a View <strong>ANALYTICAL_COST_PLAN_QUOTE</strong>. A consulta foi estruturada em blocos para tratar os dados, realizar os relacionamentos e consolidar os diferentes cenários.</p>
+
+<h3>1. Seleção e organização dos dados</h3>
+<p>O primeiro bloco define as informações que serão disponibilizadas pela View. São selecionados dados de projeto, programa, subprojeto, solicitação, clientes, amostra, análise, data, laboratório, planejamento e custos.</p>
+<div class="code-title">Trecho da consulta:</div><div class="sql-container"><pre>SELECT
+    CASE WHEN o.about_entity IS NULL THEN ... ELSE o.about_entity END AS project_code,
+    o.template AS programa,
+    ...
+    BFC.TOTAL_COST AS total_cost
+FROM ...</pre></div>
+
+<h3>2. Tratamento das informações textuais</h3>
+<p>Os campos textuais recebem tratamento para remover tabulações, quebras de linha, aspas e ponto e vírgula. Isso padroniza os valores que serão disponibilizados no resultado.</p>
+<div class="code-title">Trecho da consulta:</div><div class="sql-container"><pre>replace(
+    replace(
+        replace(
+            REPLACE(o.project_name, CHR(9), &#x27;_&#x27;),
+            chr(13), &#x27;&#x27;
+        ),
+        chr(34), &#x27;&#x27;
+    ),
+    &#x27;;&#x27;, &#x27;_&#x27;
+) AS project</pre></div>
+
+<h3>3. Regra de negócio com CASE WHEN</h3>
+<p>O <strong>CASE WHEN</strong> define o valor de <strong>project_code</strong>. Quando <strong>about_entity</strong> está vazio, a consulta utiliza <strong>project_code</strong> após o tratamento dos caracteres; caso contrário, utiliza <strong>about_entity</strong>.</p>
+<div class="code-title">Trecho da consulta:</div><div class="sql-container"><pre>CASE
+    WHEN o.about_entity IS NULL
+    THEN replace(
+        replace(REPLACE(o.project_code, CHR(9), &#x27;_&#x27;), chr(13), &#x27;&#x27;),
+        &#x27;;&#x27;, &#x27;_&#x27;
+    )
+    ELSE o.about_entity
+END AS project_code</pre></div>
+
+<h3>4. Subconsultas</h3>
+<p>Subconsultas são utilizadas para buscar informações complementares, como nomes dos usuários responsáveis pela solicitação e códigos de análise associados ao código de custo e à amostra.</p>
+<div class="code-title">Trecho da consulta:</div><div class="sql-container"><pre>(select full_name
+   from lims_users
+  where user_name = o.created_by) as solicitante,
+
+(select full_name
+   from lims_users
+  where user_name = o.requester_2) as client_1,
+
+(select analysis
+   from test
+  where cost_code = tbl2.cost_code
+    and sample_number = TBL2.SAMPLE_ID
+    and rownum = 1) as analysis_code</pre></div>
+
+<h3>5. Cálculo do plano de réplicas</h3>
+<p>O campo <strong>rep_plan</strong> é calculado a partir dos resultados associados ao teste. A consulta considera os registros com status <strong>N, E e M</strong>, conta réplicas distintas e utiliza <strong>MAX</strong> para consolidar o resultado por nome.</p>
+<div class="code-title">Trecho da consulta:</div><div class="sql-container"><pre>(select max(count(distinct(replicate_count)))
+    from result
+   where test_number = t.test_number
+     and status in (&#x27;N&#x27;,&#x27;E&#x27;,&#x27;M&#x27;)
+  group by name) as rep_plan</pre></div>
+
+<h3>6. Relacionamento entre tabelas com JOIN</h3>
+<p>A consulta utiliza <strong>INNER JOIN</strong> para relacionamentos necessários e <strong>LEFT JOIN</strong> para trazer informações financeiras quando disponíveis. A tabela <strong>VERSIONS</strong> também é utilizada para relacionar a versão correspondente do código financeiro.</p>
+<div class="code-title">Trecho da consulta:</div><div class="sql-container"><pre>from test t
+inner join sample s
+    on s.sample_number = t.sample_number
+
+inner join orders o
+    on o.order_num = TBL2.order_num
+
+LEFT JOIN FINANCE_CODE BFC
+    ON BFC.NAME = TBL2.cost_code
+
+INNER JOIN VERSIONS V
+    ON V.TABLE_NAME = &#x27;FINANCE_CODE&#x27;
+    AND V.NAME = BFC.NAME
+    AND V.VERSION = BFC.VERSION</pre></div>
+
+<h3>7. Consolidação de diferentes cenários com UNION ALL</h3>
+<p>A View possui dois grandes blocos de dados. O primeiro trata pedidos aceitos e o segundo trata pedidos que ainda não foram aceitos. O <strong>UNION ALL</strong> reúne os resultados em uma única estrutura.</p>
+<div class="code-title">Trecho da consulta:</div><div class="sql-container"><pre>SELECT ...
+FROM ...
+
+UNION ALL
+
+SELECT ...
+FROM (...) TBL ...</pre></div>
+
+<h3>8. Agrupamento dos resultados</h3>
+<p>O <strong>GROUP BY</strong> consolida os registros do primeiro bloco, agrupando pedido, amostra, status, plano de réplicas, laboratório e código de custo.</p>
+<div class="code-title">Trecho da consulta:</div><div class="sql-container"><pre>group by
+    ORDER_NUM,
+    SAMPLE_ID,
+    STATUS_SAMPLE,
+    REP_PLAN,
+    LAB,
+    COST_CODE</pre></div>
+
+<h3>9. Pedidos não aceitos</h3>
+<p>O segundo bloco da View é identificado pelo comentário <strong>NOT ACCEPTED ORDERS</strong>. Ele considera pedidos cujo status agregado ainda não está entre os estados finais ou de exceção definidos na regra.</p>
+<div class="code-title">Trecho da consulta:</div><div class="sql-container"><pre>--NOT ACCEPTED ORDERS--
+
+where O.aggregated_status not in (
+    &#x27;ACCEPTED&#x27;,
+    &#x27;CLOSED&#x27;,
+    &#x27;CANCELED&#x27;,
+    &#x27;CANCELLED&#x27;,
+    &#x27;NOT SUBMITTED&#x27;,
+    &#x27;LT_PENDING&#x27;,
+    &#x27;ST_PENDING&#x27;,
+    &#x27;BIF_ERROR&#x27;
+)</pre></div>
+
+<h3>10. Tratamento dos diferentes cenários de planejamento</h3>
+<p>Dentro do bloco de pedidos não aceitos, o planejamento é formado por vários <strong>UNION ALL</strong>. São tratados cenários de análises individuais, listas de testes, análises individuais filhas, listas de testes filhas e conjuntos de amostras.</p>
+<div class="code-title">Exemplo dos blocos de planejamento:</div>
+<div class="sql-container"><pre>select LT.ORDERS,
+       LT.ID,
+       LT.SAMPLES_COUNT,
+       LT.PLANNED_RECEIPT_DATE,
+       To_number(IA.NUM_REP) as NUM_REP,
+       IA.COD_CUSTOS,
+       IA.TIPO_CUSTO,
+       IA.LAB
+  from X_LT_PLANNING LT
+  LEFT JOIN (TABLE(str2tbl(LT.INDIVIDUAL_ANALYSIS))) c
+    on LT.INDIVIDUAL_ANALYSIS like &#x27;%&#x27; ||c.column_value || &#x27;%&#x27;
+  LEFT JOIN plan_individual_analysis IA
+    ON IA.LIMS_CODE = c.column_value
+ WHERE LT.SAMPLES_SET IS NULL
+   AND LT.INDIVIDUAL_ANALYSIS IS NOT NULL
+
+UNION ALL
+
+select LT.ORDERS,
+       LT.ID,
+       LT.SAMPLES_COUNT,
+       LT.PLANNED_RECEIPT_DATE,
+       To_number(BPTL.NUM_REP) as NUM_REP,
+       BPTL.COD_CUSTOS,
+       BPTL.TIPO_CUSTO,
+       BPTL.LAB
+  from X_LT_PLANNING LT
+  left join(TABLE(str2tbl(LT.TEST_LIST))) c
+    on LT.TEST_LIST like &#x27;%&#x27; || c.column_value || &#x27;%&#x27;
+  LEFT JOIN PLAN_TEST_LISTS BPTL
+    ON BPTL.TEST_LIST = c.column_value
+ WHERE LT.SAMPLES_SET IS NULL
+   AND LT.TEST_LIST IS NOT NULL</pre></div>
+
+<h3>11. Contagem de conjuntos de amostras</h3>
+<p>Para determinados cenários filhos, a consulta calcula a quantidade de conjuntos de amostras utilizando <strong>COUNT(X_SAMPLES_SET)</strong>, considerando somente registros marcados como filhos.</p>
+<div class="code-title">Trecho da consulta:</div><div class="sql-container"><pre>(SELECT COUNT(X_SAMPLES_SET)
+   FROM X_SAMPLES_SET_CONFIG
+  WHERE IS_CHILD = &#x27;T&#x27;
+    AND X_SAMPLES_SET = LT.SAMPLES_SET) AS SAMPLES_COUNT</pre></div>
+
+<h3>12. Consolidação dos custos</h3>
+<p>Os custos são obtidos a partir da tabela financeira e disponibilizados separadamente por tipo. A View retorna custo fixo, variável, de mão de obra e o custo total.</p>
+<div class="code-title">Trecho da consulta:</div><div class="sql-container"><pre>BFC.FIXED_COST AS fixed_cost,
+BFC.VARIABLE_COST AS variable_cost,
+BFC.LABOR_COST AS labor_cost,
+BFC.TOTAL_COST AS total_cost</pre></div>
+
+<h3>13. Relacionamento com VERSIONS</h3>
+<p>O relacionamento com <strong>VERSIONS</strong> garante que o código financeiro seja associado à sua versão correspondente, considerando a tabela <strong>FINANCE_CODE</strong>.</p>
+<div class="code-title">Trecho da consulta:</div><div class="sql-container"><pre>INNER JOIN VERSIONS V
+    ON V.TABLE_NAME = &#x27;FINANCE_CODE&#x27;
+    AND V.NAME = BFC.NAME
+    AND V.VERSION = BFC.VERSION</pre></div>
+
+<div class="tags">
+<span class="tag">SQL</span><span class="tag">Oracle Database</span><span class="tag">Views</span><span class="tag">JOIN</span><span class="tag">LEFT JOIN</span><span class="tag">UNION ALL</span><span class="tag">GROUP BY</span><span class="tag">CASE WHEN</span><span class="tag">Subqueries</span><span class="tag">Agregações</span>
+</div>
+</section>
+
+<section>
+<h2>Resultado</h2>
+<p>O desenvolvimento da View criou uma estrutura única para consolidar informações que estavam distribuídas em diferentes tabelas.</p>
+<ul>
+<li>Centralização das informações utilizadas na análise;</li>
+<li>Padronização do tratamento dos diferentes cenários;</li>
+<li>Relacionamento entre informações operacionais e financeiras;</li>
+<li>Reutilização da consulta em análises e relatórios;</li>
+<li>Maior facilidade para análises de custos e planejamento.</li>
+</ul>
+<div class="highlight">A View transforma uma consulta complexa em uma fonte de dados estruturada e reutilizável, facilitando a utilização das informações em análises posteriores.</div>
+</section>
+
+<section>
+<h2>Consulta SQL completa</h2>
+<p>Abaixo está a consulta completa utilizada para construção da View <strong>ANALYTICAL_COST_PLAN_QUOTE</strong>.</p>
+<div class="sql-container"><pre>CREATE OR REPLACE VIEW ANALYTICAL_COST_PLAN_QUOTE AS
+select case when o.about_entity is null then replace(replace(REPLACE(o.project_code,CHR(9),&#x27;_&#x27;),chr(13),&#x27;&#x27;),&#x27;;&#x27;,&#x27;_&#x27;) else o.about_entity end as project_code,
+       o.template as programa,
+       replace(replace(replace(REPLACE(o.project_name,CHR(9),&#x27;_&#x27;),chr(13),&#x27;&#x27;),chr(34),&#x27;&#x27;),&#x27;;&#x27;,&#x27;_&#x27;) as project,
+       replace(replace(replace(REPLACE(o.subproject_name,CHR(9),&#x27;_&#x27;),chr(13),&#x27;&#x27;),chr(34),&#x27;&#x27;),&#x27;;&#x27;,&#x27;_&#x27;) as subproject,
+       o.order_num as request_id,
+       replace(replace(replace(REPLACE(o.technology_innovation,CHR(9),&#x27;_&#x27;),chr(13),&#x27;&#x27;),chr(34),&#x27;&#x27;),&#x27;;&#x27;,&#x27;_&#x27;) as PIT,
+       (select full_name from lims_users where user_name = o.created_by) as solicitante,
+       (select full_name from lims_users where user_name = o.requester_2) as client_1,
+       (select full_name from lims_users where user_name = o.requester_3) as client_2,
+       TBL2.SAMPLE_ID as sample_id,
+       TBL2.STATUS_SAMPLE as status_sample,
+       (select analysis from test where cost_code = tbl2.cost_code and sample_number = TBL2.SAMPLE_ID and rownum = 1) as analysis_code,
+       (select sc_en_rep_name from analysis where name = (select analysis from test where cost_code = tbl2.cost_code and sample_number = TBL2.SAMPLE_ID and rownum = 1) and rownum = 1) as analysis,
+       to_date(o.received_on,&#x27;dd/mm/yy&#x27;) as receipt_date,
+       TBL2.REP_PLAN as rep_plan,
+       TBL2.lab,
+       TBL2.cost_code || &#x27; - &#x27; ||
+       (select fc.description_en
+          from finance_code fc INNER JOIN VERSIONS V ON FC.NAME=V.NAME AND FC.VERSION=V.VERSION
+         where fc.name = TBL2.COST_CODE
+           AND V.TABLE_NAME=&#x27;FINANCE_CODE&#x27;
+           and rownum = 1) as cost_code,
+       BFC.FIXED_COST AS fixed_cost,
+       BFC.VARIABLE_COST AS variable_cost,
+       BFC.LABOR_COST AS labor_cost,
+       BFC.TOTAL_COST AS total_cost
+  from
+(select * from
+(select
+       S.ORDER_NUM,
+       s.sample_number as sample_id,
+       (select EN_VALUE
+          from list_entry
+         where list = &#x27;SAMPLE_STATUS&#x27;
+           AND NAME = s.status) as status_sample,
+       (select max(count(distinct(replicate_count)))
+              from result
+             where test_number = t.test_number
+               and status in (&#x27;N&#x27;,&#x27;E&#x27;,&#x27;M&#x27;)
+            group by name) as rep_plan,
+       t.lab,
+       t.cost_code as cost_code
+       from test t
+ inner join sample s on s.sample_number = t.sample_number
+ where t.cost_code is not null
+   AND T.STATUS in (&#x27;I&#x27;,&#x27;P&#x27;,&#x27;C&#x27;)) TBL
+ group by ORDER_NUM,SAMPLE_ID,STATUS_SAMPLE,REP_PLAN,LAB,COST_CODE) TBL2
+ inner join orders o on o.order_num = TBL2.order_num
+ LEFT JOIN FINANCE_CODE BFC ON BFC.NAME = TBL2.cost_code
+ INNER JOIN VERSIONS V ON V.TABLE_NAME = &#x27;FINANCE_CODE&#x27; AND V.NAME = BFC.NAME AND V.VERSION = BFC.VERSION
+
+UNION ALL
+
+--NOT ACCEPTED ORDERS--
+select case
+         when o.about_entity is null then replace(replace(REPLACE(o.project_code,CHR(9),&#x27;_&#x27;),chr(13),&#x27;&#x27;),&#x27;;&#x27;,&#x27;_&#x27;)
+         else o.about_entity
+       end as project_code,
+       o.template as programa,
+       replace(replace(replace(REPLACE(o.project_name,CHR(9),&#x27;_&#x27;),chr(13),&#x27;&#x27;),chr(34),&#x27;&#x27;),&#x27;;&#x27;,&#x27;_&#x27;) as project,
+       replace(replace(replace(REPLACE(o.subproject_name,CHR(9),&#x27;_&#x27;),chr(13),&#x27;&#x27;),chr(34),&#x27;&#x27;),&#x27;;&#x27;,&#x27;_&#x27;) as subproject,
+       o.order_num as request_id,
+       replace(replace(replace(REPLACE(o.technology_innovation,CHR(9),&#x27;_&#x27;),chr(13),&#x27;&#x27;),chr(34),&#x27;&#x27;),&#x27;;&#x27;,&#x27;_&#x27;) as PIT,
+       (select full_name from lims_users where user_name = o.created_by) as solicitante,
+       (select full_name from lims_users where user_name = o.requester_2) as client_1,
+       (select full_name from lims_users where user_name = o.requester_3) as client_2,
+       TBL.ID as sample_id,
+       O.AGGREGATED_STATUS as status_sample,
+       (select analysis from test where cost_code = tbl.cod_custos and sample_number = TBL.ID and rownum = 1) as analysis_code,
+       (select sc_en_rep_name from analysis where name = (select analysis from test where cost_code = tbl.cod_custos and sample_number = TBL.ID and rownum = 1) and rownum = 1) as analysis,
+       TO_DATE(o.sample_receipt_date,&#x27;DD/MM/YYYY HH24:MI:SS&#x27;) as receipt_date,
+       tbl.num_rep * TBL.SAMPLES_COUNT as rep_plan,
+       tbl.lab,
+       tbl.cod_custos || &#x27; - &#x27; ||
+       (select fc.description_en from finance_code fc where fc.name = tbl.cod_custos and rownum = 1) as cost_code,
+       BFC.FIXED_COST as fixed_cost,
+       BFC.VARIABLE_COST as variable_cost,
+       BFC.LABOR_COST as labor_cost,
+       BFC.TOTAL_COST as total_cost
+  from (
+--TABLE--
+select * from (
+select LT.ORDERS,
+       LT.ID,
+       LT.SAMPLES_COUNT,
+       LT.PLANNED_RECEIPT_DATE,
+       To_number(IA.NUM_REP) as NUM_REP,
+       IA.COD_CUSTOS,
+       IA.TIPO_CUSTO,
+       IA.LAB
+  from X_LT_PLANNING LT
+  LEFT JOIN (TABLE(str2tbl(LT.INDIVIDUAL_ANALYSIS))) c on LT.INDIVIDUAL_ANALYSIS like &#x27;%&#x27; ||c.column_value || &#x27;%&#x27;
+  LEFT JOIN plan_individual_analysis IA ON IA.LIMS_CODE = c.column_value
+ WHERE LT.SAMPLES_SET IS NULL
+   AND LT.INDIVIDUAL_ANALYSIS IS NOT NULL
+
+UNION ALL
+
+select LT.ORDERS,
+       LT.ID,
+       LT.SAMPLES_COUNT,
+       LT.PLANNED_RECEIPT_DATE,
+       To_number(BPTL.NUM_REP) as NUM_REP,
+       BPTL.COD_CUSTOS,
+       BPTL.TIPO_CUSTO,
+       BPTL.LAB
+  from X_LT_PLANNING LT
+  left join(TABLE(str2tbl(LT.TEST_LIST))) c on LT.TEST_LIST like &#x27;%&#x27; || c.column_value || &#x27;%&#x27;
+  LEFT JOIN PLAN_TEST_LISTS BPTL ON BPTL.TEST_LIST = c.column_value
+ WHERE LT.SAMPLES_SET IS NULL
+   AND LT.TEST_LIST IS NOT NULL
+
+UNION ALL
+
+select LT.ORDERS,
+       LT.ID,
+       LT.SAMPLES_COUNT,
+       LT.PLANNED_RECEIPT_DATE,
+       To_number(IA.NUM_REP) as NUM_REP,
+       IA.COD_CUSTOS,
+       IA.TIPO_CUSTO,
+       IA.LAB
+  from X_LT_PLANNING LT
+  left join(TABLE(str2tbl(LT.INDIVIDUAL_ANALYSIS))) c on LT.INDIVIDUAL_ANALYSIS like &#x27;%&#x27; ||c.column_value || &#x27;%&#x27;
+  LEFT JOIN plan_individual_analysis IA ON IA.LIMS_CODE = c.column_value
+ WHERE LT.SAMPLES_SET IS NOT NULL
+   AND LT.INDIVIDUAL_ANALYSIS IS NOT NULL
+
+UNION ALL
+
+select LT.ORDERS,
+       LT.ID,
+       LT.SAMPLES_COUNT,
+       LT.PLANNED_RECEIPT_DATE,
+       To_number(BPTL.NUM_REP) as NUM_REP,
+       BPTL.COD_CUSTOS,
+       BPTL.TIPO_CUSTO,
+       BPTL.LAB
+  from X_LT_PLANNING LT
+  left join(TABLE(str2tbl(LT.TEST_LIST))) c on LT.TEST_LIST like &#x27;%&#x27; || c.column_value || &#x27;%&#x27;
+  LEFT JOIN PLAN_TEST_LISTS BPTL ON BPTL.TEST_LIST = c.column_value
+ WHERE LT.SAMPLES_SET IS NOT NULL
+   AND LT.TEST_LIST IS NOT NULL
+
+UNION ALL
+
+select LT.ORDERS,
+       LT.ID,
+       (SELECT COUNT(X_SAMPLES_SET)
+          FROM X_SAMPLES_SET_CONFIG
+         WHERE IS_CHILD = &#x27;T&#x27;
+           AND X_SAMPLES_SET = LT.SAMPLES_SET) AS SAMPLES_COUNT,
+       LT.PLANNED_RECEIPT_DATE,
+       To_number(IA.NUM_REP) as NUM_REP,
+       IA.COD_CUSTOS,
+       IA.TIPO_CUSTO,
+       IA.LAB
+  from X_LT_PLANNING LT
+  left join(TABLE(str2tbl(LT.INDIVIDUAL_ANALYSIS_CHILD))) c on LT.INDIVIDUAL_ANALYSIS like &#x27;%&#x27; ||c.column_value || &#x27;%&#x27;
+  LEFT JOIN plan_individual_analysis IA ON IA.LIMS_CODE = c.column_value
+ WHERE LT.SAMPLES_SET IS NOT NULL
+   AND LT.INDIVIDUAL_ANALYSIS_CHILD IS NOT NULL
+
+UNION ALL
+
+select LT.ORDERS,
+       LT.ID,
+       (SELECT COUNT(X_SAMPLES_SET)
+          FROM X_SAMPLES_SET_CONFIG
+         WHERE IS_CHILD = &#x27;T&#x27;
+           AND X_SAMPLES_SET = LT.SAMPLES_SET) AS SAMPLES_COUNT,
+       LT.PLANNED_RECEIPT_DATE,
+       To_number(BPTL.NUM_REP) as NUM_REP,
+       BPTL.COD_CUSTOS,
+       BPTL.TIPO_CUSTO,
+       BPTL.LAB
+  from X_LT_PLANNING LT
+  left join(TABLE(str2tbl(LT.TEST_LIST_CHILD))) c on LT.TEST_LIST like &#x27;%&#x27; ||c.column_value || &#x27;%&#x27;
+  LEFT JOIN PLAN_TEST_LISTS BPTL ON BPTL.TEST_LIST = c.column_value
+ WHERE LT.SAMPLES_SET IS NOT NULL
+   AND LT.TEST_LIST_CHILD IS NOT NULL
+   ) TBL2 group by orders, id, samples_count,PLANNED_RECEIPT_DATE, num_rep, COD_CUSTOS, TIPO_CUSTO, LAB
+--END TABLE--
+   ) TBL inner join orders o on o.order_num = TBL.ORDERS
+   LEFT JOIN FINANCE_CODE BFC ON BFC.NAME = TBL.COD_CUSTOS
+   INNER JOIN VERSIONS V ON V.TABLE_NAME = &#x27;FINANCE_CODE&#x27; AND V.NAME = BFC.NAME AND V.VERSION = BFC.VERSION
+      where O.aggregated_status not in (&#x27;ACCEPTED&#x27;,&#x27;CLOSED&#x27;,&#x27;CANCELED&#x27;,&#x27;CANCELLED&#x27;,&#x27;NOT SUBMITTED&#x27;,&#x27;LT_PENDING&#x27;,&#x27;ST_PENDING&#x27;,&#x27;BIF_ERROR&#x27;);</pre></div>
+</section>
+
+</main>
+
+<footer>© 2026 Eveline Drescher | Portfólio de Dados</footer>
+</body>
+</html>

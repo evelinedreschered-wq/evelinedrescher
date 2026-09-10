@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Eveline Drescher | Portfólio de Dados</title>
+
+    <!-- Fonte Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+
+        /* ==============================
+           CONFIGURAÇÕES GERAIS
+        ============================== */
+
+        :root {
+            --azul-escuro: #0f172a;
+            --azul: #1e3a8a;
+            --azul-claro: #3b82f6;
+            --branco: #ffffff;
+            --cinza: #cbd5e1;
+            --texto: #334155;
+            --fundo: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--fundo);
+            color: var(--texto);
+            line-height: 1.6;
+        }
+
+        /* ==============================
+           HERO
+        ============================== */
+
+        header {
+            background: linear-gradient(
+                135deg,
+                #111c3d 0%,
+                #1e3a8a 100%
+            );
+
+            color: var(--branco);
+
+            min-height: 500px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 60px 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            gap: 70px;
+        }
+
+        /* ==============================
+           FOTO
+        ============================== */
+
+        .profile-img {
+            width: 350px;
+            height: 350px;
+
+            min-width: 350px;
+
+            object-fit: cover;
+
+            object-position: center top;
+
+            border-radius: 50%;
+
+            border: 6px solid white;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.35);
+
+            background-color: #e2e8f0;
+        }
+
+        /* ==============================
+           TEXTO DO HERO
+        ============================== */
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 3.2rem;
+
+            line-height: 1.15;
+
+            font-weight: 700;
+
+            margin-bottom: 20px;
+
+            color: white;
+        }
+
+        .hero-content h2 {
+            font-size: 1.25rem;
+
+            line-height: 1.5;
+
+            font-weight: 400;
+
+            color: #cbd5e1;
+
+            margin-bottom: 30px;
+        }
+
+        .hero-content p {
+            font-size: 1.05rem;
+
+            line-height: 1.8;
+
+            color: #f1f5f9;
+
+            max-width: 800px;
+
+            margin-bottom: 30px;
+        }
+
+        /* ==============================
+           BOTÕES
+        ============================== */
+
+        .hero-buttons {
+            display: flex;
+
+            gap: 18px;
+
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-block;
+
+            padding: 14px 28px;
+
+            border-radius: 8px;
+
+            font-size: 1rem;
+
+            font-weight: 600;
+
+            transition: all 0.3s ease;
+        }
+
+        .button-primary {
+            background: white;
+
+            color: #0f172a;
+        }
+
+        .button-primary:hover {
+            background: #e2e8f0;
+
+            transform: translateY(-2px);
+        }
+
+        .button-secondary {
+            background: transparent;
+
+            color: white;
+
+            border: 1px solid #94a3b8;
+        }
+
+        .button-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+
+            transform: translateY(-2px);
+        }
+
+        /* ==============================
+           SEÇÕES
+        ============================== */
+
+        section {
+            padding: 80px 0;
+        }
+
+        section:nth-child(even) {
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+
+            font-size: 2rem;
+
+            color: var(--azul-escuro);
+
+            margin-bottom: 45px;
+        }
+
+        .section-title::after {
+            content: "";
+
+            display: block;
+
+            width: 60px;
+
+            height: 4px;
+
+            background: var(--azul-claro);
+
+            border-radius: 10px;
+
+            margin: 12px auto 0;
+        }
+
+        /* ==============================
+           SOBRE
+        ============================== */
+
+        .about {
+            max-width: 900px;
+
+            margin: auto;
+
+            text-align: center;
+
+            font-size: 1.05rem;
+        }
+
+        .about p {
+            margin-bottom: 20px;
+        }
+
+        /* ==============================
+           TECNOLOGIAS
+        ============================== */
+
+        .skills {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(180px, 1fr));
+
+            gap: 20px;
+        }
+
+        .skill-card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            text-align: center;
+
+            font-weight: 600;
+
+            border: 1px solid #e2e8f0;
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.07);
+
+            transition: 0.3s;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+
+            border-color: var(--azul-claro);
+
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+
+            margin-bottom: 10px;
+        }
+
+        /* ==============================
+           PROJETOS
+        ============================== */
+
+        .projects {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+
+            gap: 25px;
+        }
+
+        .project-card {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            border: 1px solid #e2e8f0;
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.07);
+
+            transition: 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .project-card-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .project-card-link h3 {
+            color: var(--azul-escuro);
+        }
+
+        .project-icon {
+            font-size: 2.2rem;
+
+            margin-bottom: 15px;
+        }
+
+        .project-card h3 {
+            color: var(--azul-escuro);
+
+            margin-bottom: 12px;
+        }
+
+        /* ==============================
+           FORMAÇÃO
+        ============================== */
+
+        .education {
+            max-width: 900px;
+
+            margin: auto;
+        }
+
+        .education-card {
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            margin-bottom: 20px;
+
+            border-left: 5px solid var(--azul-claro);
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        .education-card h3 {
+            color: var(--azul-escuro);
+
+            margin-bottom: 8px;
+        }
+
+        .education-card p {
+            color: #64748b;
+        }
+
+        /* ==============================
+           CONTATO
+        ============================== */
+
+        .contact {
+            text-align: center;
+
+            max-width: 700px;
+
+            margin: auto;
+        }
+
+        .contact p {
+            margin-bottom: 20px;
+        }
+
+        .contact-email {
+            display: inline-block;
+
+            background: var(--azul-escuro);
+
+            color: white;
+
+            padding: 14px 25px;
+
+            border-radius: 8px;
+
+            transition: 0.3s;
+        }
+
+        .contact-email:hover {
+            background: var(--azul);
+
+            transform: translateY(-2px);
+        }
+
+        /* ==============================
+           FOOTER
+        ============================== */
+
+        footer {
+            background: var(--azul-escuro);
+
+            color: white;
+
+            text-align: center;
+
+            padding: 30px;
+        }
+
+        footer p {
+            color: #cbd5e1;
+
+            font-size: 0.9rem;
+        }
+
+        /* ==============================
+           CELULAR
+        ============================== */
+
+        @media (max-width: 900px) {
+
+            .hero {
+                gap: 40px;
+            }
+
+            .profile-img {
+                width: 280px;
+                height: 280px;
+
+                min-width: 280px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            header {
+                padding: 60px 0;
+            }
+
+            .hero {
+                flex-direction: column;
+
+                text-align: center;
+            }
+
+            .profile-img {
+                width: 240px;
+                height: 240px;
+
+                min-width: 240px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero-content h2 {
+                font-size: 1rem;
+            }
+
+            .hero-content p {
+                font-size: 0.95rem;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .container {
+                width: 92%;
+            }
+
+            .profile-img {
+                width: 200px;
+                height: 200px;
+
+                min-width: 200px;
+            }
+
+            .hero-content h1 {
+                font-size: 1.9rem;
+            }
+
+            .button {
+                width: 100%;
+
+                text-align: center;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =================================
+         CABEÇALHO
+    ================================== -->
+
+    <header>
+
+        <div class="container">
+
+            <div class="hero">
+
+                <!--
+                    IMPORTANTE:
+                    A foto está dentro da pasta "imagens",
+                    que está dentro da pasta "Portifolio".
+                -->
+
+                <img
+                    src="./imagens/eveline.jpg"
+                    alt="Foto de Eveline Drescher"
+                    class="profile-img"
+                >
+
+
+                <div class="hero-content">
+
+                    <h1>
+                        Eveline Drescher
+                    </h1>
+
+
+                    <h2>
+                        Analista de Dados • Power BI • SQL • Power Apps • Power Automate
+                    </h2>
+
+
+                    <p>
+                        Profissional em Ciência de Dados e Engenharia de Dados,
+                        com experiência em Business Intelligence, SQL,
+                        Power Platform e automação de processos.
+                    </p>
+
+
+                    <div class="hero-buttons">
+
+                        <a
+                            href="#projetos"
+                            class="button button-primary"
+                        >
+                            Ver projetos
+                        </a>
+
+
+                        <a
+                            href="#contato"
+                            class="button button-secondary"
+                        >
+                            Entre em contato
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =================================
+         SOBRE
+    ================================== -->
+
+    <section id="sobre">
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Sobre Mim
+            </h2>
+
+
+            <div class="about">
+
+                <p>
+                    Atualmente atuo com soluções de dados utilizando SQL,
+                    Power BI, Power Apps e Power Automate para apoiar
+                    decisões de negócio e otimizar processos.
+                </p>
+
+
+                <p>
+                    Minha trajetória combina tecnologia, análise de dados
+                    e comunicação estratégica, permitindo transformar
+                    informações em insights relevantes para o negócio.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================
+         TECNOLOGIAS
+    ================================== -->
+
+    <section id="tecnologias">
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Tecnologias
+            </h2>
+
+
+            <div class="skills">
+
+                <div class="skill-card">
+                    <div class="skill-icon">📊</div>
+                    Power BI
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">🗄️</div>
+                    SQL
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">🐍</div>
+                    Python
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">📱</div>
+                    Power Apps
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">⚙️</div>
+                    Power Automate
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">📈</div>
+                    Excel
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">💻</div>
+                    Power Fx
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-icon">💡</div>
+                    Business Intelligence
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================
+         PROJETOS
+    ================================== -->
+
+    <section id="projetos">
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Projetos
+            </h2>
+
+
+            <div class="projects">
+
+                <div class="project-card">
+
+                    <div class="project-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Dashboard Power BI
+                    </h3>
+
+                    <p>
+                        Desenvolvimento de dashboards e indicadores
+                        estratégicos para acompanhamento de resultados,
+                        análise de dados e apoio à tomada de decisão.
+                    </p>
+
+                </div>
+
+
+                <a href="power-apps.html" class="project-card project-card-link">
+
+                    <div class="project-icon">
+                        📱
+                    </div>
+
+                    <h3>
+                        Power Apps
+                    </h3>
+
+                    <p>
+                        Desenvolvimento de aplicações corporativas
+                        para digitalização de processos e melhoria
+                        da experiência dos usuários.
+                    </p>
+
+                </a>
+
+
+                <a href="power-automate.html" class="project-card project-card-link">
+
+                    <div class="project-icon">
+                        ⚙️
+                    </div>
+
+                    <h3>
+                        Power Automate
+                    </h3>
+
+                    <p>
+                        Automação de processos, notificações,
+                        aprovações e integrações para aumentar
+                        produtividade e reduzir tarefas manuais.
+                    </p>
+
+                </a>
+
+
+                <a href="sql.html" class="project-card project-card-link">
+
+                    <div class="project-icon">
+                        🗄️
+                    </div>
+
+                    <h3>
+                        SQL Analytics
+                    </h3>
+
+                    <p>
+                        Desenvolvimento de consultas SQL,
+                        joins, views e análises para geração
+                        de informações e relatórios gerenciais.
+                    </p>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================
+         FORMAÇÃO
+    ================================== -->
+
+    <section id="formacao">
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Formação
+            </h2>
+
+
+            <div class="education">
+
+                <div class="education-card">
+
+                    <h3>
+                        Pós-graduação em Engenharia de Dados
+                    </h3>
+
+                    <p>
+                        PUCRS • Conclusão prevista em 2027
+                    </p>
+
+                </div>
+
+
+                <div class="education-card">
+
+                    <h3>
+                        Ciência de Dados
+                    </h3>
+
+                    <p>
+                        Universidade Estácio de Sá •
+                        Conclusão prevista em 2026
+                    </p>
+
+                </div>
+
+
+                <div class="education-card">
+
+                    <h3>
+                        Jornalismo
+                    </h3>
+
+                    <p>
+                        Universidade Federal de Santa Maria (UFSM)
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================
+         CONTATO
+    ================================== -->
+
+    <section id="contato">
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Contato
+            </h2>
+
+
+            <div class="contact">
+
+                <p>
+                    Vamos conversar sobre dados, tecnologia
+                    e oportunidades?
+                </p>
+
+
+                <a
+                    href="mailto:evelinedrescher@yahoo.com.br"
+                    class="contact-email"
+                >
+                    📧 evelinedrescher@yahoo.com.br
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================
+         RODAPÉ
+    ================================== -->
+
+    <footer>
+
+        <p>
+            © 2026 Eveline Drescher | Portfólio de Dados
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
