@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Power BI | Eveline Drescher</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        :root {
+            --azul-escuro: #0f172a;
+            --azul: #1e3a8a;
+            --azul-claro: #3b82f6;
+            --fundo: #f8fafc;
+            --texto: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--fundo);
+            color: var(--texto);
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(
+                135deg,
+                #111c3d 0%,
+                #1e3a8a 100%
+            );
+
+            color: white;
+
+            padding: 70px 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .back {
+            display: inline-block;
+
+            color: #cbd5e1;
+
+            text-decoration: none;
+
+            margin-bottom: 35px;
+
+            font-weight: 500;
+        }
+
+        .back:hover {
+            color: white;
+        }
+
+        header h1 {
+            font-size: 3rem;
+
+            line-height: 1.2;
+
+            margin-bottom: 18px;
+        }
+
+        header p {
+            color: #cbd5e1;
+
+            max-width: 850px;
+
+            font-size: 1.1rem;
+        }
+
+        section {
+            padding: 70px 0;
+        }
+
+        section:nth-child(even) {
+            background: white;
+        }
+
+        .section-title {
+            color: var(--azul-escuro);
+
+            font-size: 2rem;
+
+            margin-bottom: 30px;
+        }
+
+        .section-title::after {
+            content: "";
+
+            display: block;
+
+            width: 60px;
+
+            height: 4px;
+
+            background: var(--azul-claro);
+
+            border-radius: 10px;
+
+            margin-top: 10px;
+        }
+
+        .intro {
+            max-width: 900px;
+        }
+
+        .project-card {
+            display: block;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            border: 1px solid #e2e8f0;
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.07);
+
+            text-decoration: none;
+
+            color: inherit;
+
+            transition: 0.3s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .project-icon {
+            font-size: 2.5rem;
+
+            margin-bottom: 15px;
+        }
+
+        .project-card h2 {
+            color: var(--azul-escuro);
+
+            margin-bottom: 12px;
+        }
+
+        .tags {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 20px;
+        }
+
+        .tag {
+            background: #e2e8f0;
+
+            color: var(--azul-escuro);
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 0.85rem;
+
+            font-weight: 600;
+        }
+
+        footer {
+            background: var(--azul-escuro);
+
+            color: white;
+
+            text-align: center;
+
+            padding: 30px;
+        }
+
+        footer p {
+            color: #cbd5e1;
+
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <header>
+
+        <div class="container">
+
+            <a
+                href="index.html"
+                class="back"
+            >
+                ← Voltar ao portfólio
+            </a>
+
+
+            <h1>
+                Power BI
+            </h1>
+
+
+            <p>
+                Projetos desenvolvidos com Microsoft Power BI,
+                envolvendo integração e transformação de dados,
+                Power Query, DAX, modelagem de dados e criação
+                de dashboards e indicadores para análise e
+                visualização de informações.
+            </p>
+
+        </div>
+
+    </header>
+
+
+    <section>
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Projetos
+            </h2>
+
+
+            <a
+                href="projeto-power-bi.html"
+                class="project-card"
+            >
+
+                <div class="project-icon">
+                    📊
+                </div>
+
+
+                <h2>
+                    Dashboard de Estudos de Verificação Cruzada
+                </h2>
+
+
+                <p>
+                    Dashboard desenvolvido para consolidar e analisar
+                    uma base histórica de estudos de verificação
+                    cruzada, transformando dados mantidos em Excel
+                    em informações interativas para acompanhamento
+                    de resultados e indicadores de qualidade.
+                </p>
+
+
+                <div class="tags">
+
+                    <span class="tag">
+                        Power BI
+                    </span>
+
+                    <span class="tag">
+                        Power Query (M)
+                    </span>
+
+                    <span class="tag">
+                        DAX
+                    </span>
+
+                    <span class="tag">
+                        ETL
+                    </span>
+
+                    <span class="tag">
+                        Limpeza e Padronização de Dados
+                    </span>
+
+                    <span class="tag">
+                        Modelagem de Dados
+                    </span>
+
+                    <span class="tag">
+                        Criação de Medidas e Indicadores
+                    </span>
+
+                    <span class="tag">
+                        Business Intelligence
+                    </span>
+
+                    <span class="tag">
+                        Data Visualization
+                    </span>
+
+                    <span class="tag">
+                        Storytelling com Dados
+                    </span>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <footer>
+
+        <p>
+            © 2026 Eveline Drescher | Portfólio de Dados
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Power BI | Dashboard de Estudos de Verificação Cruzada | Eveline Drescher</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        :root {
+            --azul-escuro: #0f172a;
+            --azul: #1e3a8a;
+            --azul-claro: #3b82f6;
+            --fundo: #f8fafc;
+            --texto: #334155;
+            --borda: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--fundo);
+            color: var(--texto);
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(
+                135deg,
+                #111c3d 0%,
+                #1e3a8a 100%
+            );
+
+            color: white;
+
+            padding: 70px 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .back {
+            display: inline-block;
+
+            color: #cbd5e1;
+
+            text-decoration: none;
+
+            margin-bottom: 35px;
+
+            font-weight: 500;
+        }
+
+        .back:hover {
+            color: white;
+        }
+
+        .project-icon {
+            font-size: 2.8rem;
+
+            margin-bottom: 15px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+
+            line-height: 1.2;
+
+            margin-bottom: 18px;
+        }
+
+        header p {
+            color: #cbd5e1;
+
+            max-width: 900px;
+
+            font-size: 1.1rem;
+        }
+
+        .tags {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 25px;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.14);
+
+            color: white;
+
+            border: 1px solid rgba(255, 255, 255, 0.20);
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 0.85rem;
+
+            font-weight: 500;
+        }
+
+        section {
+            padding: 70px 0;
+        }
+
+        section:nth-child(even) {
+            background: white;
+        }
+
+        .section-title {
+            color: var(--azul-escuro);
+
+            font-size: 2rem;
+
+            margin-bottom: 30px;
+        }
+
+        .section-title::after {
+            content: "";
+
+            display: block;
+
+            width: 60px;
+
+            height: 4px;
+
+            background: var(--azul-claro);
+
+            border-radius: 10px;
+
+            margin-top: 10px;
+        }
+
+        .content {
+            max-width: 950px;
+        }
+
+        .content p {
+            margin-bottom: 16px;
+        }
+
+        .content ul {
+            margin: 15px 0 20px 25px;
+        }
+
+        .content li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background: #eff6ff;
+
+            border-left: 4px solid var(--azul-claro);
+
+            padding: 20px;
+
+            border-radius: 8px;
+
+            margin: 25px 0;
+        }
+
+        .image-box {
+            margin: 30px 0;
+
+            background: white;
+
+            border: 1px solid var(--borda);
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        .image-box img {
+            display: block;
+
+            width: 100%;
+
+            height: auto;
+        }
+
+        .image-caption {
+            padding: 12px 16px;
+
+            color: #64748b;
+
+            font-size: 0.85rem;
+        }
+
+        .code-title {
+            color: var(--azul-escuro);
+
+            font-size: 0.9rem;
+
+            font-weight: 600;
+
+            margin-top: 25px;
+
+            margin-bottom: 8px;
+        }
+
+        .code-box {
+            background: #0f172a;
+
+            color: #e2e8f0;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            overflow-x: auto;
+
+            margin-bottom: 25px;
+        }
+
+        .code-box pre {
+            font-family: Consolas, Monaco, monospace;
+
+            font-size: 0.85rem;
+
+            line-height: 1.6;
+
+            white-space: pre-wrap;
+        }
+
+        .metrics {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin: 25px 0;
+        }
+
+        .metric {
+            background: white;
+
+            border: 1px solid var(--borda);
+
+            border-radius: 12px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .metric h3 {
+            color: var(--azul-escuro);
+
+            font-size: 1rem;
+
+            margin-bottom: 8px;
+        }
+
+        .metric p {
+            font-size: 0.9rem;
+        }
+
+        footer {
+            background: var(--azul-escuro);
+
+            color: white;
+
+            text-align: center;
+
+            padding: 30px;
+        }
+
+        footer p {
+            color: #cbd5e1;
+
+            font-size: 0.9rem;
+        }
+
+
+        .results-grid {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 20px;
+
+            margin: 30px 0;
+        }
+
+        .result-card {
+            background: white;
+
+            border: 1px solid var(--borda);
+
+            border-radius: 12px;
+
+            padding: 24px;
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.05);
+
+            transition: 0.3s;
+        }
+
+        .result-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 10px 24px rgba(0, 0, 0, 0.09);
+        }
+
+        .result-card h3 {
+            color: var(--azul-escuro);
+
+            font-size: 1.05rem;
+
+            margin-bottom: 10px;
+        }
+
+        .result-card p {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 800px) {
+
+            .metrics,
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            section {
+                padding: 55px 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <header>
+
+        <div class="container">
+
+            <a href="power-bi.html" class="back">
+                ← Voltar para Power BI
+            </a>
+
+            <div class="project-icon">
+                📊
+            </div>
+
+            <h1>
+                Dashboard em BI de estudos de verificação cruzada de resultados
+            </h1>
+
+            <p>
+                Desenvolvimento de um dashboard em Power BI para consolidar,
+                transformar e analisar uma base histórica de estudos de
+                verificação cruzada, tornando os dados mais acessíveis para
+                visualização, interpretação e acompanhamento dos resultados.
+            </p>
+
+            <div class="tags">
+                <span class="tag">Power BI</span>
+                <span class="tag">Power Query (M)</span>
+                <span class="tag">DAX</span>
+                <span class="tag">ETL</span>
+                <span class="tag">Limpeza e Padronização de Dados</span>
+                <span class="tag">Modelagem de Dados</span>
+                <span class="tag">Criação de Medidas e Indicadores</span>
+                <span class="tag">Business Intelligence</span>
+                <span class="tag">Data Visualization</span>
+                <span class="tag">Storytelling com Dados</span>
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">Problema</h2>
+
+            <p>
+                Desde 2006 a área laboratorial de uma empresa compara componentes
+                de seus produtos com resultados de estudos internacionais para
+                verificar a qualidade, acurácia e confiabilidade desses dados.
+                Porém hoje eles ainda estão dispostos em Excel, que devido ao
+                grande volume de informações, demora para carregar e deixa difícil
+                separar os casos que estão em andamento dos já finalizados e tirar
+                insights dessas informações.
+            </p>
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">Objetivo</h2>
+
+            <p>
+                Criar um dashboard trazendo apenas os estudos já finalizados,
+                que são o grande foco de análise para líderes e traduzir os
+                dados em insights valiosos para o negócio, pensando na facilidade
+                de visualização, interpretação e no auxílio do processo de
+                verificação de qualidade dos resultados e identificação de
+                problemas específicos.
+            </p>
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">Desenvolvimento</h2>
+
+            <p>
+                Inicialmente foi realizada a integração da base histórica de dados
+                ao Power BI por meio de consultas desenvolvidas em Power Query
+                (linguagem M), utilizando como fonte um conjunto de planilhas Excel
+                mantidas pela área desde 2006.
+            </p>
+
+            <p>
+                Devido ao longo período de utilização da base, foi necessário
+                executar um processo de limpeza, transformação e padronização dos
+                dados. Nesta etapa foram corrigidas inconsistências de preenchimento,
+                divergências de nomenclatura, diferenças de capitalização
+                (maiúsculas e minúsculas), variações de descrição para um mesmo
+                elemento e outros fatores que poderiam comprometer a qualidade
+                das análises e a confiabilidade dos indicadores.
+            </p>
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">Modelagem e Estrutura dos Dados</h2>
+
+            <p>
+                A solução foi estruturada a partir de uma tabela principal
+                denominada <em>Cross Check Completo</em>, responsável por
+                consolidar todas as informações dos estudos finalizados.
+                A partir dessa base central foram criadas consultas derivadas
+                por meio de referências no Power Query para cada categoria de
+                análise: <strong>EP</strong>, <strong>Bilateral</strong> e
+                <strong>Estudos Colaborativos</strong>.
+            </p>
+
+            <p>
+                Essa abordagem trouxe diversas vantagens para a solução:
+            </p>
+
+            <ul>
+                <li>Centralização das regras de transformação e padronização dos dados;</li>
+                <li>Reutilização das etapas de tratamento entre as diferentes análises;</li>
+                <li>Redução da duplicidade de processos;</li>
+                <li>Maior facilidade de manutenção da solução;</li>
+                <li>Consistência das informações apresentadas no dashboard;</li>
+                <li>Estrutura escalável para futuras expansões do projeto.</li>
+            </ul>
+
+            <div class="image-box">
+                <img src="imagens/dash_tabelas.png"
+                     alt="Estrutura das tabelas e consultas do Power BI">
+                <div class="image-caption">
+                    Estrutura das tabelas e consultas utilizadas no projeto.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">Experiência do Usuário</h2>
+
+            <p>
+                Além do tratamento e modelagem dos dados, foi desenvolvida uma
+                estrutura de navegação intuitiva utilizando recursos de navegação
+                entre páginas do Power BI. Para isso, foi criada uma página inicial
+                atuando como um menu principal, contendo botões que direcionam o
+                usuário para as diferentes áreas de análise do dashboard.
+            </p>
+
+            <p>
+                O objetivo dessa abordagem foi permitir que os usuários acessassem
+                rapidamente métricas gerais e análises específicas de cada tipo de
+                estudo, sem a necessidade de navegar manualmente por diversas
+                páginas. A organização do conteúdo foi planejada para facilitar
+                a exploração das informações, otimizar a experiência de uso e
+                apoiar o processo de análise e tomada de decisão.
+            </p>
+
+            <div class="image-box">
+                <img src="imagens/dash_estudos.png"
+                     alt="Navegação entre as áreas do dashboard">
+                <div class="image-caption">
+                    Menu principal e navegação entre as diferentes análises.
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">Página de Análise Geral dos Resultados</h2>
+
+            <div class="image-box">
+                <img src="imagens/dash_geral.png"
+                     alt="Página de análise geral dos resultados">
+                <div class="image-caption">
+                    Página de Análise Geral dos Resultados.
+                </div>
+            </div>
+
+            <p>
+                Esta página foi desenvolvida para fornecer uma visão consolidada
+                dos estudos de verificação cruzada, reunindo os principais
+                indicadores e métricas globais da base de dados. Seu objetivo é
+                permitir que os usuários acompanhem rapidamente a distribuição
+                dos resultados, identifiquem tendências e monitorem indicadores
+                de qualidade laboratorial antes de aprofundar a análise em
+                páginas específicas para cada tipo de estudo.
+            </p>
+
+            <p>
+                Por meio de filtros dinâmicos, é possível segmentar as informações
+                por <strong>analito</strong>, <strong>amostra</strong>,
+                <strong>método</strong>, <strong>laboratório</strong> e
+                <strong>período</strong>, tornando as análises mais flexíveis
+                e adaptáveis às necessidades de cada usuário.
+            </p>
+
+            <p>
+                Para facilitar a interpretação das informações, foram utilizadas
+                visualizações adequadas para cada tipo de análise, incluindo
+                gráficos de rosca, barras, colunas empilhadas e séries temporais.
+            </p>
+
+            <p>
+                Também foram implementados filtros interativos que permitem ao
+                usuário explorar os dados de forma dinâmica, possibilitando
+                análises específicas sem a necessidade de criação de novos
+                relatórios.
+            </p>
+
+            <p>
+                A estrutura da página foi planejada para destacar os indicadores
+                mais relevantes logo na visualização inicial, permitindo uma
+                compreensão rápida do cenário geral antes do aprofundamento em
+                análises mais detalhadas.
+            </p>
+
+            <p>
+                Os gráficos foram organizados de forma a apresentar diferentes
+                perspectivas dos dados.
+            </p>
+
+            <p>
+                O dashboard permite analisar:
+            </p>
+
+            <ul>
+                <li>Distribuição dos estudos por organizador;</li>
+                <li>Quantidade de análises realizadas por matriz;</li>
+                <li>Proporção de resultados satisfatórios e insatisfatórios;</li>
+                <li>Distribuição dos estudos por categoria (EP, Bilateral e Estudos Colaborativos);</li>
+                <li>Evolução histórica dos resultados ao longo do tempo;</li>
+                <li>Comparação entre resultados satisfatórios e insatisfatórios por período.</li>
+            </ul>
+
+            <p>
+                Esta página atua como ponto de partida para a exploração dos
+                dados, apresentando uma visão macro dos resultados. A partir
+                dela, os usuários podem aprofundar a análise em páginas dedicadas
+                a cada modalidade de estudo, permitindo uma investigação mais
+                detalhada de métricas, indicadores e comportamentos específicos.
+            </p>
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">Página de Análise dos Estudos Colaborativos</h2>
+
+            <div class="image-box">
+                <img src="imagens/dash_colaborativos.png"
+                     alt="Página de análise dos Estudos Colaborativos">
+                <div class="image-caption">
+                    Página de Análise dos Estudos Colaborativos.
+                </div>
+            </div>
+
+            <p>
+                Esta página foi desenvolvida para concentrar as análises
+                relacionadas aos Estudos Colaborativos. Como essa modalidade
+                possui um volume menor de dados e está concentrada em um período
+                mais curto quando comparada aos demais tipos de estudo, foram
+                utilizadas visualizações mais objetivas, focadas nos principais
+                indicadores necessários para o acompanhamento dos resultados.
+            </p>
+
+            <p>
+                Foram implementados filtros interativos que permitem a
+                segmentação dos dados por diferentes critérios, proporcionando
+                maior flexibilidade de análise e possibilitando que os usuários
+                explorem as informações de acordo com suas necessidades.
+            </p>
+
+            <p>
+                A página permite analisar:
+            </p>
+
+            <ul>
+                <li>Distribuição dos resultados satisfatórios e insatisfatórios;</li>
+                <li>Participação das diferentes amostras avaliadas;</li>
+                <li>Quantificação dos métodos aplicados;</li>
+                <li>Evolução dos resultados ao longo do tempo;</li>
+                <li>Comparação entre os resultados obtidos pela empresa e os resultados de referência do estudo.</li>
+            </ul>
+
+            <p>
+                Um dos principais indicadores desenvolvidos para esta página foi
+                o gráfico <strong>"Resultados BAT x Média dos Resultados de Consenso"</strong>.
+            </p>
+
+            <p>
+                Esse gráfico compara a média dos resultados obtidos pela empresa
+                (representada pela linha azul) com a média geral dos resultados
+                de consenso dos estudos de referência (representada pela linha
+                verde), permitindo avaliar o grau de alinhamento entre os
+                resultados internos e os valores de referência obtidos pelos
+                participantes do estudo.
+            </p>
+
+            <p>
+                A comparação entre os resultados internos e os valores de consenso
+                permite identificar o quão próximos os resultados da empresa estão
+                dos valores de referência utilizados pelo estudo, fornecendo um
+                indicador adicional para avaliação da qualidade analítica dos
+                resultados.
+            </p>
+
+            <p>
+                Essa visualização facilita a identificação de possíveis desvios,
+                variações de desempenho e oportunidades de investigação,
+                contribuindo para os processos de validação analítica, controle
+                de qualidade e monitoramento da confiabilidade dos resultados
+                laboratoriais.
+            </p>
+
+            <p>
+                Considerando o menor volume de dados disponível para essa
+                modalidade de estudo, a página foi projetada com foco na
+                simplicidade e na rápida interpretação das informações.
+                A disposição dos gráficos prioriza os indicadores mais
+                relevantes, permitindo uma análise eficiente sem a necessidade
+                de múltiplas interações ou navegação adicional.
+            </p>
+
+
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">Página de Análise dos Ensaios de Proficiência (EP)</h2>
+
+            <div class="image-box">
+                <img src="imagens/dash_ep.png"
+                     alt="Página de análise dos Ensaios de Proficiência">
+                <div class="image-caption">
+                    Página de Análise dos Ensaios de Proficiência (EP).
+                </div>
+            </div>
+
+            <p>
+                Esta página foi desenvolvida para concentrar as análises dos
+                <strong>Ensaios de Proficiência (EP)</strong>, modalidade que
+                representa o maior volume de dados disponível dentro da base
+                histórica e, consequentemente, a maior complexidade analítica
+                do dashboard.
+            </p>
+
+            <p>
+                Para atender às diferentes necessidades de investigação, foram
+                implementados filtros dinâmicos que permitem segmentar os
+                resultados por <strong>analito</strong>, <strong>amostra</strong>,
+                <strong>matriz</strong>, <strong>método</strong>,
+                <strong>organizador</strong>, <strong>laboratório</strong> e
+                <strong>período</strong>, possibilitando análises detalhadas
+                sob diferentes perspectivas.
+            </p>
+
+            <p>
+                A imagem apresentada foi filtrada para o analito
+                <strong>Umidade</strong>, permitindo acompanhar sua evolução
+                ao longo do tempo, comparar resultados internos com valores
+                de referência e identificar possíveis desvios em relação aos
+                critérios de aceitabilidade definidos pelos estudos.
+            </p>
+
+            <p>
+                A página reúne indicadores voltados ao monitoramento da
+                qualidade analítica dos resultados, incluindo:
+            </p>
+
+            <ul>
+                <li>Tendência histórica de Z-Scores;</li>
+                <li>Comparação entre resultados satisfatórios e insatisfatórios;</li>
+                <li>Comparação entre resultados da empresa e resultados de consenso dos participantes do estudo;</li>
+                <li>Avaliação do desempenho por analito;</li>
+                <li>Monitoramento de desvios e resultados fora dos critérios de aceitação.</li>
+            </ul>
+
+            <h3>Estruturação dos Dados e Gráficos</h3>
+
+            <p>
+                Durante o desenvolvimento dos gráficos de tendência e comparação,
+                surgiu a necessidade de garantir a correta ordenação dos registros
+                ao longo do tempo sem comprometer a legibilidade das visualizações.
+            </p>
+
+            <p>
+                Os analitos possuíam identificadores únicos associados ao seu nome.
+                Utilizando o filtro apresentado nesta página como exemplo, o analito
+                <strong>Umidade</strong> poderia estar associado a registros como
+                <strong>009 - Umidade</strong>, <strong>321 - Umidade</strong>,
+                <strong>812 - Umidade</strong>, entre outros.
+            </p>
+
+            <p>
+                Esses identificadores eram fundamentais para garantir a ordenação
+                correta dos dados e evitar ambiguidades entre registros semelhantes.
+                Contudo, exibi-los diretamente nos gráficos tornaria a visualização
+                mais poluída e menos intuitiva para o usuário.
+            </p>
+
+            <p>
+                Para resolver esse problema, foi criada uma coluna auxiliar que
+                combinava o identificador único com o nome do analito. Essa coluna
+                foi utilizada exclusivamente para a classificação dos registros,
+                enquanto os gráficos foram configurados para exibir apenas o nome
+                do analito.
+            </p>
+
+            <p>Exemplo da lógica utilizada:</p>
+
+            <div class="code-box">
+<pre>Analito_Ordenacao =
+FORMAT([CodigoAnalito], "000")
+& " - " &
+[Analito]</pre>
+            </div>
+
+            <p>
+                Posteriormente, o campo <strong>Analito</strong> foi configurado
+                para ser classificado pela coluna <strong>Analito_Ordenacao</strong>.
+            </p>
+
+            <p>
+                Dessa forma, a ordenação dos registros continuou sendo realizada
+                por um identificador único, enquanto a visualização apresentou
+                apenas: <strong>Umidade</strong>
+            </p>
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">
+                Monitoramento de Z-Scores e Controle de Limites
+            </h2>
+
+            <p>
+                Uma das principais análises desta página é o acompanhamento da
+                tendência de Z-Score ao longo do tempo.
+            </p>
+
+            <p>
+                O gráfico foi desenvolvido para apresentar simultaneamente dois
+                indicadores distintos: <strong>Z Score Principal</strong> e
+                <strong>Z Score Mesclado</strong>. Embora ambos possam estar
+                associados aos mesmos analitos, eles representam processos
+                analíticos diferentes dentro do laboratório e, por essa razão,
+                são armazenados em colunas independentes na base de dados e
+                analisados separadamente.
+            </p>
+
+            <p>
+                Para facilitar a interpretação dos resultados, foram criadas
+                medidas representando os limites de aceitabilidade utilizados
+                pelo estudo:
+            </p>
+
+            <div class="code-box">
+<pre>Limite_Inferior = -3
+
+Limite_Superior = 3</pre>
+            </div>
+
+            <p>
+                Esses limites definem a faixa considerada aceitável para os
+                resultados de Z-Score. No gráfico, a região compreendida entre
+                <strong>-3 e +3</strong> foi destacada visualmente, permitindo
+                uma rápida identificação de comportamentos dentro ou fora do
+                padrão esperado.
+            </p>
+
+            <p>
+                Além disso, foi desenvolvida uma medida responsável por destacar
+                automaticamente resultados que ultrapassassem esses limites:
+            </p>
+
+            <div class="code-box">
+<pre>Z_Fora =
+VAR z = MAX('Cross Check - EP'[Z Score])
+RETURN
+IF(
+    ABS(z) &gt; 3,
+    z,
+    BLANK()
+)</pre>
+            </div>
+
+            <p>
+                Dessa forma, qualquer resultado acima de <strong>+3</strong> ou
+                abaixo de <strong>-3</strong> passa a ser exibido em vermelho,
+                direcionando imediatamente a atenção do usuário para possíveis
+                desvios que demandem investigação.
+            </p>
+
+            <p>
+                No exemplo apresentado, é possível observar registros do analito
+                <strong>Umidade</strong> acima do limite superior estabelecido,
+                indicando resultados fora dos parâmetros de aceitabilidade
+                definidos pelo estudo.
+            </p>
+
+            <div class="image-box">
+                <img src="imagens/dash_analitos.png"
+                     alt="Análise de Z-Scores por analito">
+                <div class="image-caption">
+                    Monitoramento de Z-Scores e identificação de resultados fora dos limites.
+                </div>
+            </div>
+
+            <p>
+                Quando um resultado ultrapassa os limites estabelecidos, ele
+                passa a ser exibido em vermelho no gráfico, direcionando
+                imediatamente a atenção do usuário para possíveis desvios ou
+                situações que demandem investigação.
+            </p>
+
+            <p>
+                No exemplo apresentado para o analito <strong>Umidade</strong>,
+                é possível observar resultados acima do limite superior de
+                aceitabilidade, evidenciando comportamentos fora dos critérios
+                definidos pelo estudo.
+            </p>
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">Página de Análise dos Estudos Bilaterais</h2>
+
+            <div class="image-box">
+                <img src="imagens/dash_bilateral.png"
+                     alt="Página de análise dos Estudos Bilaterais">
+                <div class="image-caption">
+                    Página de Análise dos Estudos Bilaterais.
+                </div>
+            </div>
+
+            <p>
+                Esta página foi desenvolvida para concentrar as análises
+                relacionadas aos <strong>Estudos Bilaterais</strong>, mantendo
+                a mesma estrutura de navegação e segmentação utilizada nos
+                Ensaios de Proficiência (EP). Dessa forma, os usuários podem
+                aplicar filtros por <strong>analito</strong>,
+                <strong>amostra</strong>, <strong>matriz</strong>,
+                <strong>método</strong>, <strong>laboratório</strong> e
+                <strong>período</strong>, facilitando a exploração dos dados
+                sob diferentes perspectivas.
+            </p>
+
+            <p>
+                Assim como nas demais páginas do dashboard, o objetivo principal
+                é fornecer uma visão clara do desempenho dos resultados obtidos
+                pela empresa, permitindo a identificação de tendências, desvios
+                e oportunidades de melhoria.
+            </p>
+
+            <p>
+                A página disponibiliza indicadores voltados para:
+            </p>
+
+            <ul>
+                <li>Distribuição de resultados satisfatórios e insatisfatórios;</li>
+                <li>Participação das diferentes matrizes analisadas;</li>
+                <li>Evolução dos resultados ao longo do tempo;</li>
+                <li>Tendência histórica dos Z-Scores;</li>
+                <li>Comparação entre os resultados obtidos pela empresa e os resultados de consenso utilizados como referência.</li>
+            </ul>
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">Particularidades dos Estudos Bilaterais</h2>
+
+            <p>
+                Embora a estrutura visual seja semelhante à utilizada nos
+                Ensaios de Proficiência, os Estudos Bilaterais possuem algumas
+                características próprias.
+            </p>
+
+            <p>
+                A principal diferença está na análise dos
+                <strong>Z-Scores</strong>, onde são considerados apenas os
+                resultados relacionados ao <strong>Mesclado</strong>. Dessa
+                forma, o gráfico de tendência apresenta uma única série
+                histórica, simplificando a interpretação dos resultados e
+                permitindo um acompanhamento mais direto do desempenho
+                observado ao longo dos estudos.
+            </p>
+
+            <p>
+                Essa abordagem foi adotada em função da estrutura dos dados
+                disponibilizados para essa modalidade de análise, que difere
+                daquela encontrada nos Ensaios de Proficiência.
+            </p>
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">Análise de Tendência e Controle de Limites</h2>
+
+            <p>
+                O gráfico de tendência foi desenvolvido utilizando a mesma
+                lógica aplicada aos Estudos EP, mantendo os limites de
+                aceitabilidade definidos para o acompanhamento dos resultados.
+            </p>
+
+            <p>
+                A faixa destacada em cinza representa a região compreendida
+                entre os valores <strong>-3 e +3</strong> de Z-Score, considerada
+                aceitável para a interpretação dos resultados.
+            </p>
+
+            <p>
+                Por meio de medidas DAX desenvolvidas especificamente para o
+                projeto, os resultados que ultrapassam esses limites são
+                destacados automaticamente, permitindo a rápida identificação
+                de possíveis desvios e direcionando a atenção dos usuários para
+                situações que exigem investigação.
+            </p>
+
+            <p>
+                Essa abordagem transforma critérios estatísticos em indicadores
+                visuais de fácil interpretação, facilitando o monitoramento
+                contínuo da qualidade dos resultados.
+            </p>
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">Comparação com Resultados de Consenso</h2>
+
+            <p>
+                Outro indicador relevante desta página é o gráfico
+                <strong>"Resultados Empresa x Resultados de Consenso"</strong>,
+                responsável por comparar os valores obtidos pela empresa com
+                os valores de referência utilizados pelos estudos bilaterais.
+            </p>
+
+            <p>
+                Essa visualização permite avaliar o grau de alinhamento entre
+                os resultados internos e os valores de consenso, auxiliando na
+                verificação da qualidade analítica e na identificação de
+                possíveis diferenças que mereçam investigação adicional.
+            </p>
+
+            <p>
+                A comparação direta entre os resultados da empresa e os valores
+                de referência contribui para aumentar a confiabilidade das
+                análises e fornece suporte para processos de controle de
+                qualidade e melhoria contínua.
+            </p>
+
+            <p>
+                Apesar de compartilhar a mesma base metodológica dos Ensaios
+                de Proficiência, a página de Estudos Bilaterais foi adaptada
+                para atender às particularidades dessa modalidade de análise,
+                mantendo o foco na rastreabilidade dos resultados, na avaliação
+                da conformidade e no apoio à tomada de decisão baseada em dados.
+            </p>
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="container content">
+
+            <h2 class="section-title">Resultados</h2>
+
+            <p>
+                A solução desenvolvida transformou uma base histórica de estudos
+                de verificação cruzada, anteriormente mantida em planilhas Excel,
+                em um ambiente analítico centralizado e interativo no Power BI.
+            </p>
+
+            <p>
+                Entre os principais ganhos proporcionados pelo projeto estão:
+            </p>
+
+            <div class="results-grid">
+
+                <div class="result-card">
+                    <h3>Centralização dos dados</h3>
+                    <p>
+                        Centralização dos dados históricos em uma única plataforma.
+                    </p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Confiabilidade das análises</h3>
+                    <p>
+                        Maior confiabilidade das análises após o processo de
+                        limpeza e padronização dos dados.
+                    </p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Acompanhamento dos estudos</h3>
+                    <p>
+                        Facilidade para identificação de estudos concluídos e
+                        acompanhamento dos resultados.
+                    </p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Acesso às informações</h3>
+                    <p>
+                        Redução do esforço necessário para localizar informações
+                        específicas.
+                    </p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Comparação de resultados</h3>
+                    <p>
+                        Comparação rápida entre resultados internos e valores de
+                        referência dos estudos.
+                    </p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Identificação de desvios</h3>
+                    <p>
+                        Identificação visual de desvios e resultados fora dos
+                        limites de aceitabilidade.
+                    </p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Dashboards interativos</h3>
+                    <p>
+                        Melhoria na interpretação dos dados por meio de dashboards
+                        interativos e filtros dinâmicos.
+                    </p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Tomada de decisão</h3>
+                    <p>
+                        Apoio à tomada de decisão baseada em dados.
+                    </p>
+                </div>
+
+            </div>
+
+            <p>
+                Além dos ganhos para os usuários finais, o projeto também
+                contribuiu para a organização e governança dos dados, por meio
+                da criação de uma estrutura padronizada de consultas, modelagem
+                otimizada e reutilização das transformações desenvolvidas no
+                Power Query.
+            </p>
+
+            <p>
+                O resultado foi uma ferramenta capaz de transformar um grande
+                volume de dados históricos em informações acessíveis, facilitando
+                o monitoramento da qualidade analítica e a geração de insights
+                para o negócio.
+            </p>
+
+        </div>
+    </section>
+
+
+    <footer>
+        <p>
+            © 2026 Eveline Drescher | Portfólio de Dados
+        </p>
+    </footer>
+
+</body>
+
+</html>
