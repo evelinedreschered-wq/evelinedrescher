@@ -16,6 +16,15 @@
     >
 
     <style>
+        :root {
+            --azul-escuro: #0f172a;
+            --azul: #1e3a8a;
+            --azul-claro: #3b82f6;
+            --fundo: #f8fafc;
+            --texto: #334155;
+            --cinza: #cbd5e1;
+            --borda: #e2e8f0;
+        }
 
         * {
             margin: 0;
@@ -23,74 +32,90 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
-            background: #f5f8fc;
-            color: #333;
+            background: var(--fundo);
+            color: var(--texto);
+            line-height: 1.7;
         }
 
         header {
-            background: linear-gradient(135deg, #0078d4, #005a9e);
+            background: linear-gradient(135deg, #111c3d 0%, #1e3a8a 100%);
             color: white;
-            padding: 60px 20px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 42px;
-            margin-bottom: 10px;
-        }
-
-        header p {
-            font-size: 18px;
-            opacity: 0.9;
+            padding: 70px 0;
         }
 
         .container {
+            width: 90%;
             max-width: 1100px;
-            margin: 50px auto;
-            padding: 0 20px;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 30px;
-            color: #0078d4;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        .intro {
-            text-align: center;
-            margin-bottom: 45px;
-        }
-
-        .intro h2 {
-            font-size: 30px;
-            color: #005a9e;
-            margin-bottom: 15px;
-        }
-
-        .intro p {
-            max-width: 800px;
             margin: 0 auto;
-            line-height: 1.8;
-            color: #555;
+        }
+
+        .back {
+            display: inline-block;
+            color: var(--cinza);
+            text-decoration: none;
+            margin-bottom: 35px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .back:hover {
+            color: white;
+            transform: translateX(-4px);
+        }
+
+        header h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            margin-bottom: 18px;
+        }
+
+        header p {
+            color: var(--cinza);
+            max-width: 850px;
+            font-size: 1.1rem;
+        }
+
+        section {
+            padding: 70px 0;
+        }
+
+        section:nth-child(even) {
+            background: white;
+        }
+
+        .section-title {
+            color: var(--azul-escuro);
+            font-size: 2rem;
+            margin-bottom: 30px;
+            line-height: 1.3;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--azul-claro);
+            border-radius: 10px;
+            margin-top: 10px;
         }
 
         .project-card {
+            display: block;
             background: white;
-            border-radius: 18px;
-            padding: 35px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-            transition: 0.3s;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--borda);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
             text-decoration: none;
             color: inherit;
-            display: block;
+            transition: 0.3s;
         }
 
         .project-card:hover {
@@ -99,20 +124,17 @@
         }
 
         .project-icon {
-            font-size: 45px;
-            margin-bottom: 20px;
-        }
-
-        .project-card h3 {
-            color: #005a9e;
-            font-size: 25px;
+            font-size: 2.5rem;
             margin-bottom: 15px;
         }
 
+        .project-card h2 {
+            color: var(--azul-escuro);
+            margin-bottom: 12px;
+        }
+
         .project-card p {
-            color: #555;
-            line-height: 1.7;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .tags {
@@ -123,44 +145,43 @@
         }
 
         .tag {
-            background: #e8f3fc;
-            color: #0078d4;
-            padding: 7px 14px;
+            background: #e2e8f0;
+            color: var(--azul-escuro);
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .arrow {
-            margin-top: 25px;
-            color: #0078d4;
+            font-size: 0.85rem;
             font-weight: 600;
         }
 
         footer {
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 70px;
-            background: #005a9e;
+            background: var(--azul-escuro);
             color: white;
+            text-align: center;
+            padding: 30px;
         }
 
-        @media (max-width: 768px) {
+        footer p {
+            color: var(--cinza);
+            font-size: 0.9rem;
+        }
 
+        @media (max-width: 600px) {
             header h1 {
-                font-size: 32px;
+                font-size: 2.2rem;
             }
 
-            .container {
-                margin-top: 30px;
+            header {
+                padding: 55px 0 65px;
+            }
+
+            section {
+                padding: 55px 0;
             }
 
             .project-card {
-                padding: 25px;
+                padding: 24px;
             }
-
         }
-
     </style>
 </head>
 
@@ -168,78 +189,84 @@
 
     <header>
 
-        <h1>Power Automate</h1>
+        <div class="container">
 
-        <p>
-            Automação de processos e integração de informações
-        </p>
+            <a
+                href="index.html"
+                class="back"
+            >
+                ← Voltar ao portfólio
+            </a>
+
+            <h1>
+                Power Automate
+            </h1>
+
+            <p>
+                Projetos desenvolvidos utilizando Power Automate para automatização de processos, integração 
+                de informações, redução de atividades manuais e aumento da confiabilidade dos dados.
+            </p>
+
+        </div>
 
     </header>
 
+    <section>
 
-    <div class="container">
+        <div class="container">
 
-        <a href="index.html" class="back-link">
-            ← Voltar para o portfólio
-        </a>
+            <h2 class="section-title">
+                Projetos
+            </h2>
 
+            <a
+                href="projeto-power-automate.html"
+                class="project-card"
+            >
 
-        <section class="intro">
+                <div class="project-icon">
+                    ⚙️
+                </div>
 
-            <h2>Projetos com Power Automate</h2>
+                <h2>
+                    Automação de cadastro de informações
+                </h2>
 
-            <p>
-                Projetos desenvolvidos utilizando Power Automate
-                para automatização de processos, integração de
-                informações, redução de atividades manuais e
-                aumento da confiabilidade dos dados.
-            </p>
+                <p>
+                    Automação do cadastro e distribuição de informações
+                    relacionadas a vidrarias de laboratório, substituindo
+                    processos manuais baseados em arquivos Excel por
+                    listas SharePoint integradas através do Power Automate.
+                </p>
 
-        </section>
+                <div class="tags">
 
+                    <span class="tag">Power Automate</span>
 
-        <a href="projeto-power-automate.html" class="project-card">
+                    <span class="tag">Automação</span>
 
-            <div class="project-icon">
-                ⚙️
-            </div>
+                    <span class="tag">Triggers e Ações</span>
 
-            <h3>
-                Automação de cadastro de informações
-            </h3>
+                    <span class="tag">Loops</span>
 
-            <p>
-                Automação do cadastro e distribuição de informações
-                relacionadas a vidrarias de laboratório, substituindo
-                processos manuais baseados em arquivos Excel por
-                listas SharePoint integradas através do Power Automate.
-            </p>
+                    <span class="tag">API</span>
 
-            <div class="tags">
+                    <span class="tag">SharePoint</span>
 
-                <span class="tag">Power Automate</span>
+                    <span class="tag">JSON</span>
 
-                <span class="tag">SharePoint</span>
+                </div>
 
-                <span class="tag">Automação</span>
+            </a>
 
-                <span class="tag">JSON</span>
+        </div>
 
-            </div>
-
-            <div class="arrow">
-                Ver projeto completo →
-            </div>
-
-        </a>
-
-    </div>
-
+    </section>
 
     <footer>
 
         <p>
-            © 2026 Eveline Drescher
+            © 2026 Eveline Drescher | Portfólio de Dados
         </p>
 
     </footer>
