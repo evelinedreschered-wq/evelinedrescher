@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    Análise de Dados da Aviação Brasileira com Python | Eveline Drescher
+</title>
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+
+<style>
+
+:root {
+    --azul-escuro: #123b63;
+    --azul: #1d5d91;
+    --azul-claro: #eaf4fb;
+    --azul-medio: #3b82b5;
+    --branco: #ffffff;
+    --cinza: #f5f7fa;
+    --cinza-texto: #5f6b76;
+    --texto: #243746;
+    --borda: #dce6ee;
+    --sombra: 0 10px 30px rgba(18, 59, 99, 0.10);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--texto);
+    background: #fff;
+    line-height: 1.8;
+}
+
+header {
+    background: linear-gradient(
+        135deg,
+        #123b63 0%,
+        #1d5d91 55%,
+        #3b82b5 100%
+    );
+
+    color: white;
+    padding: 70px 20px 85px;
+}
+
+.header-container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.back-link {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    font-size: .95rem;
+    margin-bottom: 45px;
+    opacity: .9;
+    transition: .3s;
+}
+
+.back-link:hover {
+    opacity: 1;
+    transform: translateX(-4px);
+}
+
+.header-tag {
+    display: inline-block;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    padding: 7px 16px;
+    border-radius: 30px;
+    font-size: .85rem;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 2.7rem;
+    line-height: 1.25;
+    max-width: 850px;
+    margin-bottom: 20px;
+}
+
+.project-subtitle {
+    max-width: 850px;
+    font-size: 1.15rem;
+    font-weight: 300;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.88);
+    margin-bottom: 18px;
+}
+
+header p {
+    max-width: 800px;
+    font-size: 1.05rem;
+    opacity: .92;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+section {
+    padding: 70px 0;
+}
+
+section:nth-child(even) {
+    background: var(--cinza);
+}
+
+.section-title {
+    color: var(--azul-escuro);
+    font-size: 2rem;
+    margin-bottom: 30px;
+    line-height: 1.3;
+}
+
+.section-title::after {
+    content: "";
+    display: block;
+    width: 55px;
+    height: 4px;
+    background: var(--azul-medio);
+    border-radius: 5px;
+    margin-top: 12px;
+}
+
+.intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.info-card {
+    background: white;
+    border: 1px solid var(--borda);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: var(--sombra);
+}
+
+.info-card h3 {
+    color: var(--azul-escuro);
+    margin-bottom: 12px;
+    font-size: 1.15rem;
+}
+
+.info-card p {
+    color: var(--cinza-texto);
+    margin-bottom: 14px;
+}
+
+.info-card p:last-child {
+    margin-bottom: 0;
+}
+
+.result-card {
+    background: white;
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    padding: 20px;
+    transition: .3s;
+}
+
+.result-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sombra);
+}
+
+/* TEXTO DAS SEÇÕES */
+
+.content-text {
+    max-width: 950px;
+}
+
+.content-text p {
+    margin-bottom: 28px;
+}
+
+.content-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* SUBSEÇÕES */
+
+.subsection {
+    margin-top: 45px;
+    margin-bottom: 35px;
+}
+
+.subsection h3 {
+    color: var(--azul-escuro);
+    font-size: 1.25rem;
+    margin-bottom: 18px;
+}
+
+footer {
+    background: #123b63;
+    color: #dce6ee;
+    text-align: center;
+    padding: 30px 20px;
+    font-size: .9rem;
+
+    margin-top: 80px;
+}
+
+/* TABELAS */
+
+.project-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 35px;
+    background: white;
+    border: 1px solid var(--borda);
+    box-shadow: var(--sombra);
+    overflow: hidden;
+}
+
+.project-table th {
+    background: var(--azul-escuro);
+    color: white;
+    text-align: left;
+    padding: 14px 16px;
+    font-weight: 600;
+}
+
+.project-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--borda);
+}
+
+.project-table tr:last-child td {
+    border-bottom: none;
+}
+
+.project-table tbody tr:hover {
+    background: #f8fbfe;
+}
+
+/* DESTAQUES */
+
+.highlight {
+    background: var(--azul-claro);
+    border-left: 5px solid var(--azul-medio);
+    padding: 22px 25px;
+    border-radius: 0 12px 12px 0;
+    margin: 25px 0;
+}
+
+.highlight strong {
+    color: var(--azul-escuro);
+}
+
+
+/* DASHBOARD INTERATIVO */
+
+.dashboard-intro {
+    max-width: 950px;
+    margin-bottom: 28px;
+}
+
+.dashboard-frame-wrap {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid var(--borda);
+    border-radius: 16px;
+    box-shadow: var(--sombra);
+    overflow: hidden;
+}
+
+.dashboard-frame {
+    display: block;
+    width: 100%;
+    height: 1100px;
+    border: none;
+    background: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .dashboard-frame {
+        height: 1250px;
+    }
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 768px) {
+
+    .intro-grid {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        padding: 50px 20px 60px;
+    }
+
+    header h1 {
+        font-size: 2.1rem;
+    }
+
+    section {
+        padding: 55px 0;
+    }
+
+    .project-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-container">
+
+        <a href="analise-dados.html" class="back-link">
+            ← Voltar para Projetos de Python
+        </a>
+
+        <h1>
+            Análise de Dados da Aviação Brasileira com Python
+        </h1>
+
+        <div class="project-subtitle">
+            Inspeção, qualidade e análise exploratória dos dados operacionais de voos realizados em 2025
+        </div>
+
+        <p>
+            Projeto desenvolvido a partir da base VRA da ANAC,
+            envolvendo consolidação de arquivos mensais,
+            avaliação da qualidade dos dados, tratamento,
+            análise exploratória e desenvolvimento de um dashboard
+            interativo para investigação de cancelamentos,
+            pontualidade e atrasos operacionais.
+        </p>
+
+    </div>
+
+</header>
+
+<section>
+
+    <div class="container">
+
+        <div class="intro-grid">
+
+            <div class="info-card">
+
+                <h3>
+                    Problema
+                </h3>
+
+                <p>
+                    A base VRA da ANAC reúne mais de um milhão de registros relacionados a voos realizados e cancelados ao longo de 2025. Antes da construção de indicadores confiáveis, foi necessário verificar a consistência das informações, identificar registros duplicados, compreender valores ausentes e validar regras operacionais presentes nos dados, garantindo que as análises fossem realizadas sobre uma base estruturada e confiável.
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>
+                    Objetivo
+                </h3>
+
+                <p>
+                    Desenvolver uma análise completa dos dados operacionais da aviação brasileira utilizando Python para consolidar, validar, tratar e explorar os registros disponibilizados pela ANAC, transformando dados brutos em indicadores, visualizações e dashboards capazes de apoiar investigações sobre cancelamentos, pontualidade, atrasos e comportamento da operação aérea ao longo de 2025.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section>
+
+    <div class="container">
+
+        <h2 class="section-title">
+            Arquivos do Projeto
+        </h2>
+
+        <div class="intro-grid">
+
+            <div class="info-card">
+
+                <h3>
+                    💻 Código Fonte
+                </h3>
+
+                <p>
+                    Script completo utilizado para consolidação,
+                    tratamento, análise exploratória e geração
+                    do dashboard interativo.
+                </p>
+
+                <p>
+                    <a href="https://github.com/evelinedreschered-wq/evelinedrescher/blob/main/analise_voos.py"
+                       target="_blank">
+                        Visualizar código no GitHub →
+                    </a>
+                </p>
+
+            </div>
+
+            <div class="info-card">
+
+                <h3>
+                    📄 Documentação Técnica
+                </h3>
+
+                <p>
+                    Relatório detalhado contendo metodologia,
+                    validações de qualidade, análises,
+                    resultados e conclusões do projeto.
+                </p>
+
+                <p>
+                    <a href="https://github.com/evelinedreschered-wq/evelinedrescher/blob/main/Projeto%20An%C3%A1lise%20de%20Dados%20da%20Avia%C3%A7%C3%A3o%20Brasileira%20com%20Python.pdf"
+                       target="_blank">
+                        Abrir documentação →
+                    </a>
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<section id="dashboard">
+    <div class="container">
+
+        <h2 class="section-title">
+            Dashboard Interativo
+        </h2>
+
+        <div class="content-text dashboard-intro">
+            <p>
+                Explore os indicadores e gráficos da operação aérea
+                brasileira em 2025 nesse dashboard desenvolvido como resultado desse projeto. Nele é possível investigar
+                o volume de voos, os cancelamentos, a pontualidade
+                e os atrasos por meio de visualizações interativas.
+            </p>
+        </div>
+
+        <div class="dashboard-frame-wrap">
+            <iframe
+                src="./dashboard_operacoes_aereas_2025.html"
+                title="Dashboard de Operações Aéreas — Brasil 2025"
+                style="width: 100%; height: 1100px; border: none;"
+                loading="lazy"
+                allowfullscreen>
+            </iframe>
+        </div>
+
+    </div>
+</section>
+
+
+<section>
+
+    <div class="container">
+
+        <h2 class="section-title">
+            Resumo
+        </h2>
+
+        <div class="content-text">
+
+            <p style="margin-bottom:32px;">
+                Este projeto apresenta um fluxo completo de análise de dados
+                aplicado à aviação brasileira utilizando informações operacionais
+                da ANAC (Agência Nacional de Aviação Civil) referentes ao ano de
+                2025.
+            </p>
+
+            <p style="margin-bottom:32px;">
+                O trabalho envolveu a consolidação de arquivos mensais,
+                avaliação da qualidade dos dados, tratamento de inconsistências,
+                análise exploratória e desenvolvimento de um dashboard
+                interativo para visualização dos resultados.
+            </p>
+
+            <p style="margin-bottom:32px;">
+                Ao longo da análise, foram investigados mais de um milhão de
+                registros operacionais relacionados a voos realizados e
+                cancelados, permitindo identificar padrões de volume
+                operacional, comportamento dos cancelamentos, indicadores de
+                pontualidade e diferenças entre horários previstos e realizados.
+            </p>
+
+            <p>
+                O projeto combina técnicas de preparação de dados, validação de
+                qualidade, análise estatística e visualização interativa para
+                transformar dados operacionais brutos em informações úteis para
+                análise e tomada de decisão.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section>
+
+    <div class="container">
+
+        <h2 class="section-title">
+            Consolidação dos Dados
+        </h2>
+
+        <div class="content-text">
+
+            <p>
+                Os arquivos mensais disponibilizados pela ANAC foram
+                integrados em uma única base de trabalho. Antes da
+                consolidação, foi realizada uma validação estrutural para
+                verificar a compatibilidade das colunas e garantir que os
+                dados pudessem ser unificados sem perda de informação.
+            </p>
+
+            <p>
+                Essa etapa permitiu reunir todas as operações registradas
+                durante o ano de 2025 em uma única estrutura analítica,
+                estabelecendo a base necessária para as etapas seguintes
+                de avaliação da qualidade dos dados, tratamento e análise
+                exploratória.
+            </p>
+
+        </div>
+
+        <div class="subsection">
+
+            <h3>
+                Resultado da Consolidação
+            </h3>
+
+            <table class="project-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Indicador</th>
+                        <th>Resultado</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Arquivos processados</td>
+                        <td>12</td>
+                    </tr>
+
+                    <tr>
+                        <td>Registros originais</td>
+                        <td>1.005.807</td>
+                    </tr>
+
+                    <tr>
+                        <td>Variáveis originais</td>
+                        <td>21</td>
+                    </tr>
+
+                    <tr>
+                        <td>Período analisado</td>
+                        <td>Janeiro a Dezembro de 2025</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="highlight">
+
+            Os 12 arquivos apresentaram estruturas compatíveis,
+            permitindo sua consolidação em uma única base sem
+            necessidade de ajustes estruturais nas colunas.
+            A base consolidada passou a ser utilizada como
+            referência para todas as etapas posteriores do projeto.
+
+        </div>
+
+    </div>
+
+</section>
+
+<section>
+
+    <div class="container">
+
+        <h2 class="section-title">
+            Avaliação da Qualidade dos Dados
+        </h2>
+
+        <div class="content-text">
+
+            <p>
+                Após a consolidação, foi realizada uma investigação detalhada
+                da qualidade da base. O objetivo foi identificar possíveis
+                problemas que poderiam comprometer a confiabilidade dos
+                resultados.
+            </p>
+
+            <div class="content-text">
+
+    <p>
+        Foram avaliados critérios relacionados à:
+    </p>
+
+    <ul style="margin-left:50px; margin-top:20px; margin-bottom:28px;">
+
+        <li>Completude dos dados;</li>
+
+        <li>Unicidade dos registros;</li>
+
+        <li>Validade das informações;</li>
+
+        <li>Consistência operacional;</li>
+
+        <li>Consistência temporal;</li>
+
+        <li>Integridade das categorias.</li>
+
+    </ul>
+
+</div>
+
+        <div class="subsection">
+
+            <h3>
+                Principais Achados
+            </h3>
+
+            <table class="project-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Verificação</th>
+                        <th>Resultado</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Registros duplicados identificados</td>
+                        <td>2</td>
+                    </tr>
+
+                    <tr>
+                        <td>Registros sem partida prevista</td>
+                        <td>28.198</td>
+                    </tr>
+
+                    <tr>
+                        <td>Registros sem chegada prevista</td>
+                        <td>28.198</td>
+                    </tr>
+
+                    <tr>
+                        <td>Registros com zero assentos</td>
+                        <td>46.700</td>
+                    </tr>
+
+                    <tr>
+                        <td>Registros sem classificação do tipo de linha</td>
+                        <td>463</td>
+                    </tr>
+
+                    <tr>
+                        <td>Falhas de conversão temporal</td>
+                        <td>0</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="highlight">
+
+            A avaliação confirmou a consistência cronológica dos voos,
+            não sendo encontrados casos de chegada anterior à partida nem
+            inconsistências entre voos realizados e horários efetivamente
+            registrados. Os problemas identificados concentraram-se
+            principalmente em campos incompletos e informações cadastrais,
+            sem comprometer a viabilidade das análises posteriores.
+
+        </div>
+
+    </div>
+
+</section>
+
+<section>
+
+    <div class="container">
+
+        <h2 class="section-title">
+            Tratamento e Preparação dos Dados
+        </h2>
+
+        <div class="content-text">
+
+            <p>
+                Com base nos resultados da avaliação de qualidade,
+                foi realizado o tratamento dos dados utilizando
+                apenas correções sustentadas pelas evidências
+                encontradas na própria base.
+            </p>
+
+            <p>
+                As principais ações executadas foram:
+            </p>
+
+            <ul style="margin: 20px 0 28px 50px;">
+
+                <li>
+                    Conversão das colunas temporais para o formato datetime;
+                </li>
+
+                <li>
+                    Remoção de duplicidades exatas;
+                </li>
+
+                <li>
+                    Exclusão de colunas sem conteúdo útil para a análise;
+                </li>
+
+                <li>
+                    Validação das transformações realizadas.
+                </li>
+
+            </ul>
+
+        </div>
+
+        <div class="subsection">
+
+            <h3>
+                Resultado do Tratamento
+            </h3>
+
+            <table class="project-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Indicador</th>
+                        <th>Resultado</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Registros finais</td>
+                        <td>1.005.805</td>
+                    </tr>
+
+                    <tr>
+                        <td>Variáveis finais</td>
+                        <td>20</td>
+                    </tr>
+
+                    <tr>
+                        <td>Duplicidades remanescentes</td>
+                        <td>0</td>
+                    </tr>
+
+                    <tr>
+                        <td>Falhas de conversão temporal</td>
+                        <td>0</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="highlight">
+
+            A base final foi mantida sem imputações artificiais,
+            preservando a integridade das informações originais
+            sempre que não existia justificativa técnica para
+            alteração. Todas as transformações realizadas foram
+            validadas para garantir a consistência da base utilizada
+            nas análises posteriores.
+
+        </div>
+
+    </div>
+
+</section>
+
+<section>
+
+    <div class="container">
+
+        <h2 class="section-title">
+            Análise Exploratória dos Dados
+        </h2>
+
+        <div class="content-text">
+
+            <p>
+                Após a preparação da base, foram desenvolvidas análises
+                exploratórias para investigar o comportamento operacional
+                da aviação brasileira ao longo de 2025.
+            </p>
+
+            <p>
+                As análises foram organizadas em quatro grandes áreas:
+            </p>
+
+        </div>
+
+        <div class="subsection">
+
+            <table class="project-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Área de Análise</th>
+                        <th>Descrição</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Volume Operacional</td>
+                        <td>
+                            Investigação da distribuição mensal dos voos
+                            realizados, identificando períodos de maior e
+                            menor movimentação.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Cancelamentos</td>
+                        <td>
+                            Avaliação da quantidade e da taxa de
+                            cancelamento por mês, companhia aérea,
+                            tipo de linha e rota.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Pontualidade Operacional</td>
+                        <td>
+                            Comparação das classificações de partida e
+                            chegada para compreender o comportamento da
+                            operação ao longo das diferentes etapas do voo.
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Diferenças entre Horários</td>
+                        <td>
+                            Cálculo direto das diferenças entre horários
+                            previstos e realizados, permitindo analisar
+                            atrasos, antecipações e registros extremos.
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="highlight">
+
+            Além das análises estatísticas, os resultados foram
+            incorporados em um dashboard interativo desenvolvido em
+            Python e Plotly para facilitar a exploração dos dados e a
+            comunicação dos principais insights encontrados.
+
+        </div>
+
+    </div>
+
+</section>
+
+<section>
+
+    <div class="container">
+
+        <h2 class="section-title">
+            Resultados
+        </h2>
+
+        <div class="content-text">
+
+            <p>
+                Após a consolidação, avaliação da qualidade, tratamento e
+                exploração dos dados, foi possível transformar mais de um
+                milhão de registros operacionais da ANAC em indicadores
+                capazes de descrever o comportamento da aviação brasileira
+                ao longo de 2025.
+            </p>
+
+            <p>
+                Os resultados permitiram identificar padrões relacionados ao
+                volume operacional, cancelamentos, pontualidade e atrasos,
+                além de validar a consistência das informações utilizadas
+                na análise.
+            </p>
+
+        </div>
+
+        <div class="subsection">
+
+            <h3>
+                Principais Números
+            </h3>
+
+            <table class="project-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Indicador</th>
+                        <th>Resultado</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Registros analisados</td>
+                        <td>1.005.805</td>
+                    </tr>
+
+                    <tr>
+                        <td>Voos realizados</td>
+                        <td>978.089</td>
+                    </tr>
+
+                    <tr>
+                        <td>Voos cancelados</td>
+                        <td>27.716</td>
+                    </tr>
+
+                    <tr>
+                        <td>Aeroportos identificados</td>
+                        <td>385</td>
+                    </tr>
+
+                    <tr>
+                        <td>Rotas analisadas</td>
+                        <td>3.192</td>
+                    </tr>
+
+                    <tr>
+                        <td>Registros extremos (&gt;24h)</td>
+                        <td>363</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="subsection">
+
+            <h3>
+                Volume Operacional
+            </h3>
+
+            <div class="content-text">
+
+                <p>
+                    A distribuição dos voos realizados apresentou variações
+                    ao longo do ano, indicando períodos com maior e menor
+                    movimentação operacional.
+                </p>
+
+            </div>
+
+            <div class="highlight">
+
+                <strong>
+                    Destaques
+                </strong>
+
+                <br><br>
+
+                ✅ Janeiro registrou o maior volume operacional do ano, com
+                <strong>86.360 voos realizados</strong>.
+
+                <br><br>
+
+                ✅ Fevereiro apresentou o menor volume operacional, com
+                <strong>76.172 voos realizados</strong>.
+
+            </div>
+
+        </div>
+
+        <div class="subsection">
+
+            <h3>
+                Cancelamentos
+            </h3>
+
+            <div class="content-text">
+
+                <p>
+                    A análise dos cancelamentos revelou diferenças importantes
+                    entre meses, tipos de linha, companhias aéreas e rotas.
+                </p>
+
+            </div>
+
+            <div class="highlight">
+
+                <strong>
+                    Destaques
+                </strong>
+
+                <br><br>
+
+                ✅ Dezembro apresentou a maior taxa de cancelamento do ano
+                (<strong>4,01%</strong>).
+
+                <br><br>
+
+                ✅ Agosto registrou a menor taxa
+                (<strong>2,17%</strong>).
+
+            </div>
+
+            <div class="subsection">
+
+                <h3>
+                    Taxa de Cancelamento por Tipo de Linha
+                </h3>
+
+                <table class="project-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Tipo de Linha</th>
+                            <th>Taxa</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>Geral</td>
+                            <td>22,33%</td>
+                        </tr>
+
+                        <tr>
+                            <td>Cargueiro</td>
+                            <td>11,16%</td>
+                        </tr>
+
+                        <tr>
+                            <td>Internacional</td>
+                            <td>4,09%</td>
+                        </tr>
+
+                        <tr>
+                            <td>Nacional</td>
+                            <td>1,75%</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="content-text">
+
+                <p>
+                    Os resultados demonstram que a frequência de
+                    cancelamentos varia significativamente entre
+                    diferentes perfis operacionais.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="subsection">
+
+            <h3>
+                Pontualidade Operacional
+            </h3>
+
+            <div class="content-text">
+
+                <p>
+                    Além das classificações disponibilizadas pela ANAC,
+                    foram realizadas análises próprias utilizando os
+                    horários previstos e realizados.
+                </p>
+
+            </div>
+
+            <h3>
+                Distribuição das Operações
+            </h3>
+
+            <table class="project-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Classificação</th>
+                        <th>Partida</th>
+                        <th>Chegada</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Antecipado</td>
+                        <td>54,37%</td>
+                        <td>60,89%</td>
+                    </tr>
+
+                    <tr>
+                        <td>Horário previsto</td>
+                        <td>5,84%</td>
+                        <td>2,46%</td>
+                    </tr>
+
+                    <tr>
+                        <td>Atrasado</td>
+                        <td>39,80%</td>
+                        <td>36,65%</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+            <div class="content-text">
+
+                <p>
+                    A análise demonstrou que as antecipações ocorreram
+                    com maior frequência do que os atrasos tanto na
+                    partida quanto na chegada.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="subsection">
+
+            <h3>
+                Casos Extremos
+            </h3>
+
+            <div class="content-text">
+
+                <p>
+                    A investigação dos horários identificou registros
+                    que exigem validação adicional.
+                </p>
+
+            </div>
+
+            <div class="highlight">
+
+                <strong>
+                    Destaques
+                </strong>
+
+                <br><br>
+
+                ✅ 363 registros apresentaram diferenças superiores
+                a 24 horas entre horários previstos e realizados.
+
+                <br><br>
+
+                ✅ O maior caso identificado apresentou diferença
+                superior a 31 dias entre o horário previsto e o realizado.
+
+            </div>
+
+            <div class="content-text">
+
+                <p>
+                    Essas ocorrências foram mantidas na base e
+                    documentadas para futuras investigações.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section>
+
+    <div class="container">
+
+        <h2 class="section-title">
+            Dashboard Executivo
+        </h2>
+
+        <div class="content-text">
+
+            <p>
+                Todos os indicadores produzidos foram consolidados em um
+                dashboard interativo (incluído no inicio dessa página) desenvolvido integralmente em Python
+                e exportado para HTML estático, permitindo a navegação
+                sem necessidade de servidor ou aplicações externas.
+            </p>
+
+            <p>
+                O painel foi estruturado em três áreas principais:
+            </p>
+
+        </div>
+
+        <div class="subsection">
+
+            <h3>
+                📊 Visão Geral
+            </h3>
+
+            <ul style="margin: 20px 0 28px 50px;">
+
+                <li>Indicadores executivos;</li>
+
+                <li>Evolução mensal dos voos;</li>
+
+                <li>Volume por companhia aérea;</li>
+
+                <li>Distribuição por tipo de linha.</li>
+
+            </ul>
+
+        </div>
+
+        <div class="subsection">
+
+            <h3>
+                ⚠️ Cancelamentos
+            </h3>
+
+            <ul style="margin: 20px 0 28px 50px;">
+
+                <li>Taxas de cancelamento;</li>
+
+                <li>Evolução mensal;</li>
+
+                <li>Heatmap operacional;</li>
+
+                <li>Rotas críticas.</li>
+
+            </ul>
+
+        </div>
+
+        <div class="subsection">
+
+            <h3>
+                ⏱️ Pontualidade e Atrasos
+            </h3>
+
+            <ul style="margin: 20px 0 28px 50px;">
+
+                <li>Comparação de classificações;</li>
+
+                <li>Fluxo Sankey;</li>
+
+                <li>Rankings operacionais;</li>
+
+                <li>Mapa de atrasos por rota.</li>
+
+            </ul>
+
+        </div>
+
+        <div class="highlight">
+
+            O dashboard permite explorar os resultados de forma
+            interativa sem a necessidade de executar novamente os
+            scripts de análise, facilitando a navegação pelos
+            indicadores e a comunicação dos principais insights
+            identificados durante o projeto.
+
+        </div>
+
+    </div>
+
+</section>
+
+<section>
+
+    <div class="container">
+
+        <div class="closing">
+
+            <h2 class="section-title">
+                Conclusão
+            </h2>
+
+            <div class="content-text">
+
+                <p>
+                    O projeto demonstrou como técnicas de consolidação,
+                    avaliação da qualidade dos dados, tratamento,
+                    análise exploratória e visualização podem transformar
+                    grandes volumes de dados operacionais em informações
+                    úteis para análise e tomada de decisão.
+                </p>
+
+                <p>
+                    A utilização de Python, Pandas e Plotly permitiu
+                    desenvolver uma solução completa, desde a preparação
+                    dos dados até a construção de um dashboard executivo
+                    interativo para exploração dos resultados.
+                </p>
+
+                <p>
+                    Além dos indicadores obtidos sobre volume operacional,
+                    cancelamentos, pontualidade e atrasos, o trabalho
+                    também possibilitou identificar inconsistências,
+                    validar a confiabilidade da base e documentar
+                    ocorrências que merecem investigação futura.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+    © 2026 Eveline Drescher • Portfólio
+</footer>
+
+</body>
+</html>
